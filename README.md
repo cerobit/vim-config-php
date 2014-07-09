@@ -2,7 +2,7 @@
 My Simple custom vim config file 
 ==================================================
 
- **This custom vim config is the result of my personal learning of vim this are inspired on many many github configs files, videos and blogs **
+ **This custom vim config is the result of my personal learning of vim this are inspired on many many github configs files, videos and blogs**
 
  Some really great dot files
 ------------------------------
@@ -24,7 +24,7 @@ My Simple custom vim config file
 * Remap ñ to <leader> for quick commands for my spanish keyboard 
 * leader leader  Quick Launch CtrlP for reeeaally quick find and open files
 * Remap leader+s Quick Save
-* ALT + j  <Alt +k> ....  Move lines or visual selections 
+* ALT + j  Alt +k ....  Move Up or Down  lines or visual selections 
 * F11 For Regenerate tags for php Complete and using the PATCHED Ctags it detects root of SYMFONY, Actual project and omit some  directories like cache, cache
 * Solarized ColorSchema
 * Hide Toolbars
