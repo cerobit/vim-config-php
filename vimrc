@@ -1,16 +1,14 @@
+set nocompatible              " be iMproved, required
+filetype off                  " required
 
-""""""""""""""""""""""""""""""""""""""""""""""""""
-"  Vundle Options 
-""""""""""""""""""""""""""""""""""""""""""""""""""
-set nocompatible               " be iMproved
-filetype off                   " required!
-
+" set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
 
-" let Vundle manage Vundle
-" required! 
-Plugin 'gmarik/Vundle'
+" let Vundle manage Vundle, required
+Plugin 'gmarik/Vundle.vim'
 
 " Repos on github
 Plugin 'kien/ctrlp.vim'
@@ -31,6 +29,7 @@ Plugin 'mattn/emmet-vim'
 Plugin 'sjl/gundo.vim'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'bling/vim-airline'
+
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -140,6 +139,7 @@ imap <leader><leader> <Esc>
     inoremap <A-k> <Esc>:m .-2<CR>==gi
     vnoremap <A-j> :m '>+1<CR>gv=gv
     vnoremap <A-k> :m '<-2<CR>gv=gv
+
 "Reload the first tav o chromium 
 nnoremap ,, :silent !sh ~/scripts/reload_cromium.sh<CR>
 
@@ -246,9 +246,17 @@ let NERDTreeIgnore=['\.o$', '\.so$', '\.bmp$', '\.class$', '^core.*', '\.vim$', 
                    \'\.modules$','\.git', '\.hg', '\.svn', '\.bzr' ]
 
 
-"-----------------------------------------------------------------------------
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Git Gutter Custom Colors
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+nmap <F4> :GitGutterSignsToggle<CR>
+highlight clear SignColumn
+let signify_sign_weight = 'NONE'
+let g:gitgutter_signs = 0                                                           "Disabled Column Sing by default
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Statuls Line  & Scroll Options
-"-----------------------------------------------------------------------------
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set laststatus=2      " show status line all the time
 set scrolloff=10      " don't scroll any closer to top/bottom
 set sidescrolloff=5   " don't scroll any closer to left/right
@@ -272,10 +280,10 @@ set statusline+=%c,                                                             
 set statusline+=%l/%L                                                               " cursor line/total lines
 set statusline+=\ %P                                                                " percent through file
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " [ Highlight the match in red]  (Thx Damian Conway)
 " Backups, undos, and swap files
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nnoremap <silent> n n:call HLNext(0.4)<cr>
 nnoremap <silent> N N:call HLNext(0.4)<cr>
 
@@ -286,7 +294,7 @@ function! HLNext (blinktime)
     let target_pat = '\c\%#'.@/
     let ring = matchadd('WhiteOnRed', target_pat, 101)
     redraw
-    exec 'sleep ' . float2nr(a:blinktime * 400) . 'm'
+    exec 'sleep ' . float2nr(a:blinktime * 600) . 'm'
     call matchdelete(ring)
     redraw
 endfunction

@@ -10,7 +10,7 @@ My Simple custom vim config file
  https://github.com/derekwyatt/vim-config/blob/master/vimrc
  http://amix.dk/vim/vimrc.html
 
- Some Videos 
+ Some Great Videos About Vim and config
 ------------------------------
  http://vimeo.com/7096383
  Damian Conway, "More Instantly Better Vim" - OSCON 2013
@@ -34,14 +34,17 @@ My Simple custom vim config file
  **ctrlp, nerdtree, vim-fugitive, vim-surround, airline**
 
 
+
 Main Requirements 
 ==================================================
 
 gvim >= 7.4
+
 git
 
 Install Config
 ==================================================
+
 1. Clone or get vimrc and put on your config location, usually ~/.vim/ 
 (Note: on vim > 7.4  vim config file could it be on ~/.vim/vimrc or traditional  ~/.vimrc)
 2. Install Vundle : https://github.com/gmarik/Vundle.vim 
