@@ -11,25 +11,35 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 
 " Repos on github
-Plugin 'kien/ctrlp.vim'
-Plugin 'scrooloose/nerdtree'
-Plugin 'scrooloose/syntastic'
+
+"Snippets - Autocomplete
 Plugin 'SirVer/ultisnips'
-Plugin 'evidens/vim-twig'
-Plugin 'majutsushi/tagbar'
-Plugin 'elzr/vim-json'
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-fugitive'
-Plugin '2072/PHP-Indenting-for-VIm'
-Plugin 'chriskempson/vim-tomorrow-theme'
-Plugin 'shawncplus/phpcomplete.vim'
+Plugin 'honza/vim-snippets'
+Plugin 'ervandew/supertab'
 Plugin 'chrisgillis/vim-bootstrap3-snippets'
+Plugin 'shawncplus/phpcomplete.vim'
+" Syntax
+Plugin 'evidens/vim-twig'
+Plugin 'scrooloose/syntastic'
+Plugin 'elzr/vim-json'
+Plugin '2072/PHP-Indenting-for-VIm'
+" Git
+Plugin 'tpope/vim-fugitive'
+Plugin 'airblade/vim-gitgutter'
+" Files - Utilities
+Plugin 'scrooloose/nerdtree'
+Plugin 'kien/ctrlp.vim'
+Plugin 'majutsushi/tagbar'
+Plugin 'tpope/vim-surround'
 Plugin 'mattn/emmet-vim'
 Plugin 'sjl/gundo.vim'
-Plugin 'airblade/vim-gitgutter'
+Plugin 'jiangmiao/auto-pairs'
 Plugin 'bling/vim-airline'
 
+" Color Schemas
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'gilsondev/lizard'
+Plugin 'chriskempson/vim-tomorrow-theme'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -92,15 +102,28 @@ set ignorecase                               " Ignore case when searching
 set smartcase                                " When searching try to be smart about cases 
 set background=dark                          " We are dark people...
 
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"  Colors
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 try
    colors solarized
-    let g:solarized_contrast="high"    "default value is normal
-  "colors Tomorrow-Night 
-  "colors molokai 
+   let g:solarized_contrast="high"    "default value is normal
 catch /^Vim\%((\a\+)\)\=:E185/
   " deal wit it
 endtry
 
+nnoremap <F9> :call ToggleColours()<CR>
+function! ToggleColours()
+    if g:colors_name == 'solarized'
+        colorscheme Tomorrow-Night
+    elseif g:colors_name == 'Tomorrow-Night'
+        colorscheme lizard
+    else
+        colorscheme solarized
+        let g:solarized_contrast="high" 
+    endif
+endfunction
 
 " In many terminal emulators the mouse works just fine, thus enable it.
 if v:version >= 702 && has('mouse')
@@ -132,6 +155,13 @@ nmap <silent><leader>/ :nohlsearch<CR>
 nnoremap <leader>i =a{
 " Remap Esc on insert mode
 imap <leader><leader> <Esc>
+
+"Reload the first tav o chromium
+nnoremap ,, :silent !sh ~/scripts/reload_cromium.sh<CR>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"  Easy move line or visual block up down
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "Movin a line
     nnoremap <A-j> :m .+1<CR>==
     nnoremap <A-k> :m .-2<CR>==
@@ -139,9 +169,6 @@ imap <leader><leader> <Esc>
     inoremap <A-k> <Esc>:m .-2<CR>==gi
     vnoremap <A-j> :m '>+1<CR>gv=gv
     vnoremap <A-k> :m '<-2<CR>gv=gv
-
-"Reload the first tav o chromium 
-nnoremap ,, :silent !sh ~/scripts/reload_cromium.sh<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Syntastic
@@ -179,6 +206,9 @@ let g:ctrlp_root_markers = ['src/', '.git/','.hg/','_darcs','.bzr']
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Ultisnips
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Supertab
+let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
+
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
@@ -190,6 +220,9 @@ let g:UltiSnipsSnippetDirectories=["UltiSnips", "coolsnippets"]
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set tags=~/.vim/tags/tags
 
+autocmd FileType php set omnifunc=phpcomplete#CompletePHP
+set complete=.,w,b,k,t,i
+set completeopt=menuone,preview
  filetype plugin indent on     " required!
  "If not specific completion scripts exits use vim general code
  if has("autocmd") && exists("+omnifunc")
@@ -199,7 +232,6 @@ set tags=~/.vim/tags/tags
                  \endif
  endif
 
- set completeopt=menuone,preview
  autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
