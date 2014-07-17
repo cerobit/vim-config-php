@@ -12,15 +12,15 @@ Plugin 'gmarik/Vundle.vim'
 
 " Repos on github
 
-"Snippets - Autocomplete
+" Snippets - Autocomplete
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 Plugin 'ervandew/supertab'
 Plugin 'chrisgillis/vim-bootstrap3-snippets'
 Plugin 'shawncplus/phpcomplete.vim'
 " Syntax
-Plugin 'evidens/vim-twig'
 Plugin 'scrooloose/syntastic'
+Plugin 'evidens/vim-twig'
 Plugin 'elzr/vim-json'
 Plugin '2072/PHP-Indenting-for-VIm'
 " Git
@@ -33,9 +33,8 @@ Plugin 'majutsushi/tagbar'
 Plugin 'tpope/vim-surround'
 Plugin 'mattn/emmet-vim'
 Plugin 'sjl/gundo.vim'
-Plugin 'jiangmiao/auto-pairs'
+Plugin 'Raimondi/delimitMate'
 Plugin 'bling/vim-airline'
-
 " Color Schemas
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'gilsondev/lizard'
@@ -261,11 +260,28 @@ set wrap                        "Wrap lines
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"  DelimitMate
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let delimitMate_expand_cr = 1
+let delimitMate_expand_space = 1        " Add spaces both sides
+" Imap easy out jump at the right 
+imap <C-J> <Plug>delimitMateJumpMany
+" Imaps S-tab used by Supertab and add new ready text argument
+imap <C-K> <Plug>delimitMateS-Tab
+" Imaps S-tab used by Supertab and add new ready text argument
+imap <C-l> <Plug>delimitMateS-Tab, '
+" Fix expand enter broken by pop-up menus
+imap <expr> <CR> pumvisible()
+                     \ ? "\<C-Y>"
+                     \ : "<Plug>delimitMateCR" 
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " NERD Tree
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nmap <F2> :NERDTreeToggle<CR>
 
 "autocmd vimenter * if !argc() | NERDTree | endif        " Auto start with Vim
+let NERDTreeWinSize = 40
 let NERDTreeBookmarksFile = expand('~/.vim/NERDTreeBookmarks')
 let NERDTreeShowBookmarks=1
 let NERDTreeQuitOnOpen=1
