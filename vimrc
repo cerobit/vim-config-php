@@ -18,14 +18,19 @@ Plugin 'honza/vim-snippets'
 Plugin 'ervandew/supertab'
 Plugin 'chrisgillis/vim-bootstrap3-snippets'
 Plugin 'shawncplus/phpcomplete.vim'
+
 " Syntax
 Plugin 'scrooloose/syntastic'
 Plugin 'evidens/vim-twig'
 Plugin 'elzr/vim-json'
 Plugin '2072/PHP-Indenting-for-VIm'
+Plugin 'JulesWang/css.vim'
+" Plugin 'hail2u/vim-css3-syntax'
+
 " Git
 Plugin 'tpope/vim-fugitive'
 Plugin 'airblade/vim-gitgutter'
+
 " Files - Utilities
 Plugin 'scrooloose/nerdtree'
 Plugin 'kien/ctrlp.vim'
@@ -35,6 +40,7 @@ Plugin 'mattn/emmet-vim'
 Plugin 'sjl/gundo.vim'
 Plugin 'Raimondi/delimitMate'
 Plugin 'bling/vim-airline'
+
 " Color Schemas
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'gilsondev/lizard'
@@ -56,22 +62,33 @@ filetype plugin indent on    " required
 " Put your non-Plugin stuff after this line
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
-" General Options 
+" General Options
 """"""""""""""""""""""""""""""""""""""""""""""""""
 
 if has('gui_running')
     set guioptions-=T
     set guioptions+=e
-    set guitablabel=%M\ %t  
-    set guifont=Droid\ Sans\ Mono\ for\ Powerline\ 10
+    set guitablabel=%M\ %t
     set guioptions-=m  "remove menu bar
     set guioptions-=T  "remove toolbar
     set guioptions-=r  "remove right-hand scroll bar
+
+    if has("x11")
+        set guifont=Droid\ Sans\ Mono\ for\ Powerline\ 10
+    elseif has("gui_macvim")
+        set guifont=Menlo\ Regular:h14
+    elseif has("gui_win32") " Windows specific options 
+        set guifont=Consolas:h12
+        au GUIEnter * simalt ~x
+    endif
+
+
+    autocmd GUIEnter * set vb t_vb=
 endif
 
 if $TERM == "xterm-256color"
   set t_Co=256
-endi
+endif
 
 " Set utf8 as standard encoding and en_US as the standard language
 set encoding=utf8
@@ -88,7 +105,7 @@ set wildmenu                                " Wild menu
 set wildmode=longest,list,full              " Wild menu options
 set cpoptions+=$
 set pastetoggle=<F3>                        " Easy paste from SO
-syntax on                                   " Switch syntax highlighting on, when the terminal has colors  
+syntax on                                   " Switch syntax highlighting on, when the terminal has colors
                                             " also switch on highlighting the last used search pattern.
 
 set hlsearch                                " Highlight search results
@@ -98,7 +115,7 @@ set display+=uhex                           " Show unprintables as <xx>
 set display+=lastline                       " Show as much as possible of the last line.
 
 set ignorecase                               " Ignore case when searching
-set smartcase                                " When searching try to be smart about cases 
+set smartcase                                " When searching try to be smart about cases
 set background=dark                          " We are dark people...
 
 
@@ -120,7 +137,7 @@ function! ToggleColours()
         colorscheme lizard
     else
         colorscheme solarized
-        let g:solarized_contrast="high" 
+        let g:solarized_contrast="high"
     endif
 endfunction
 
@@ -133,7 +150,7 @@ if v:version >= 702 && has('mouse')
 endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Re-Maps 
+" Re-Maps
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 let mapleader="ñ"
@@ -149,14 +166,17 @@ nnoremap <leader>f :/function<CR>zz:nohlsearch<CR>
 " Tagbar Activation
 noremap <silent><leader>t :TagbarOpenAutoClose<CR>
 " Clean highlight after search
-nmap <silent><leader>/ :nohlsearch<CR>
-" Fast Indent code block
-nnoremap <leader>i =a{
+noremap <silent>// :nohlsearch<CR>
+" Fast Indent code block inner {
+nnoremap <leader>i =i{<C-o>
 " Remap Esc on insert mode
 imap <leader><leader> <Esc>
 
 "Reload the first tav o chromium
 nnoremap ,, :silent !sh ~/scripts/reload_cromium.sh<CR>
+
+"Semicolon Special remap
+inoremap <S-CR> <C-o>A;<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "  Easy move line or visual block up down
@@ -172,10 +192,10 @@ nnoremap ,, :silent !sh ~/scripts/reload_cromium.sh<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Syntastic
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:syntastic_php_checkers=['php' ]       " Syntastics array options ejem chain of php phpcs phpms   
+let g:syntastic_php_checkers=['php' ]       " Syntastics array options ejem chain of php phpcs phpms
                                             " phpcs and phpms must be installed
 
-let g:syntastic_stl_format = '[%E{Err: %fe #%e}%B{, }%W{Warn: %fw #%w}]' " Syntastical statusline format 
+let g:syntastic_stl_format = '[%E{Err: %fe #%e}%B{, }%W{Warn: %fw #%w}]' " Syntastical statusline format
                                                                          "Ignored when powerline is enabled.
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -185,7 +205,7 @@ let g:syntastic_stl_format = '[%E{Err: %fe #%e}%B{, }%W{Warn: %fw #%w}]' " Synta
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
-"let g:airline_theme="molokai"
+"let g:airline_theme="wombat"
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "CtrlP
@@ -215,14 +235,26 @@ let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 let g:UltiSnipsSnippetDirectories=["UltiSnips", "coolsnippets"]
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Tags and Omnicomplete configs 
+" Tags and Omnicomplete configs
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set tags=~/.vim/tags/tags
 
-autocmd FileType php set omnifunc=phpcomplete#CompletePHP
-set complete=.,w,b,k,t,i
+if has('autocmd')
+  augroup OmniCompleteModes
+    autocmd!
+    autocmd FileType php           nested setlocal omnifunc=phpcomplete#CompletePHP
+    autocmd FileType python        nested setlocal omnifunc=pythoncomplete#Complete
+    autocmd FileType css           nested setlocal omnifunc=csscomplete#CompleteCSS
+    autocmd FileType html,markdown nested setlocal omnifunc=htmlcomplete#CompleteTags
+    autocmd FileType javascript    nested setlocal omnifunc=javascriptcomplete#CompleteJS
+    autocmd FileType xml           nested setlocal omnifunc=xmlcomplete#CompleteTags
+  augroup END
+endif
+
+
+set complete=.,w,b,t,i,k
 set completeopt=menuone,preview
- filetype plugin indent on     " required!
+
  "If not specific completion scripts exits use vim general code
  if has("autocmd") && exists("+omnifunc")
     autocmd Filetype *
@@ -234,7 +266,7 @@ set completeopt=menuone,preview
  autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" CTAGS - UPDATE 
+" CTAGS - UPDATE
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nnoremap <F11> :exe "!sh ~/.vim/tags/ctagsupdate.sh " . shellescape(expand('%:p:h')) . " ."<CR>
 
@@ -250,6 +282,10 @@ set shiftwidth=4                 " set the default autoindent
 set softtabstop=4
 set hidden
 
+" Indent  after break lines 
+set breakindent
+set showbreak=..
+
 " Linebreak on 500 characters
 set lbr
 set tw=500
@@ -264,7 +300,7 @@ set wrap                        "Wrap lines
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let delimitMate_expand_cr = 1
 let delimitMate_expand_space = 1        " Add spaces both sides
-" Imap easy out jump at the right 
+" Imap easy out jump at the right
 imap <C-J> <Plug>delimitMateJumpMany
 " Imaps S-tab used by Supertab and add new ready text argument
 imap <C-K> <Plug>delimitMateS-Tab
@@ -273,7 +309,7 @@ imap <C-l> <Plug>delimitMateS-Tab, '
 " Fix expand enter broken by pop-up menus
 imap <expr> <CR> pumvisible()
                      \ ? "\<C-Y>"
-                     \ : "<Plug>delimitMateCR" 
+                     \ : "<Plug>delimitMateCR"
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " NERD Tree
@@ -290,7 +326,7 @@ let NERDTreeShowHidden=1
 let g:nerdtree_tabs_open_on_gui_startup=0
 let NERDTreeIgnore=['\.o$', '\.so$', '\.bmp$', '\.class$', '^core.*', '\.vim$', '\~$',
                    \'\.pyc$', '\.pyo$', '\.jpg$', '\.gif$','\.png$', '\.ico$', '\.exe$',
-                   \'\.cod$', '\.obj$', '\.mac$', '\.1st', '\.dll$', '\.pyd$', '\.zip$', 
+                   \'\.cod$', '\.obj$', '\.mac$', '\.1st', '\.dll$', '\.pyd$', '\.zip$',
                    \'\.modules$','\.git', '\.hg', '\.svn', '\.bzr' ]
 
 
