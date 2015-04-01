@@ -46,6 +46,11 @@ Plugin 'altercation/vim-colors-solarized'
 Plugin 'gilsondev/lizard'
 Plugin 'chriskempson/vim-tomorrow-theme'
 
+" Magic 
+Plugin 'jaxbot/browserlink.vim' "Require  nodejs 
+" Plugin 'mattn/livestyle-vim'    "Requieres go and build 
+Plugin '907th/vim-auto-save'
+
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -194,6 +199,10 @@ inoremap <S-CR> <C-o>A;<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:syntastic_php_checkers=['php' ]       " Syntastics array options ejem chain of php phpcs phpms
                                             " phpcs and phpms must be installed
+                                            
+let g:syntastic_html_tidy_exec = 'tidy'
+
+let g:syntastic_javascript_checkers=['jshint'] 
 
 let g:syntastic_stl_format = '[%E{Err: %fe #%e}%B{, }%W{Warn: %fw #%w}]' " Syntastical statusline format
                                                                          "Ignored when powerline is enabled.
@@ -232,7 +241,7 @@ let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 " Folders with Snippets
-let g:UltiSnipsSnippetDirectories=["UltiSnips", "coolsnippets"]
+let g:UltiSnipsSnippetDirectories=["UltiSnips", "coolsnippets", "coolsnippets/cier"]
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Tags and Omnicomplete configs
@@ -294,7 +303,8 @@ set ai                          "Auto indent
 set si                          "Smart indent
 set wrap                        "Wrap lines
 
-
+command! -range=% -nargs=0 Tab2Space execute '<line1>,<line2>s#^\t\+#\=repeat(" ", len(submatch(0))*' . &ts . ')'
+command! -range=% -nargs=0 Space2Tab execute '<line1>,<line2>s#^\( \{'.&ts.'\}\)\+#\=repeat("\t", len(submatch(0))/' . &ts . ')'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "  DelimitMate
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
