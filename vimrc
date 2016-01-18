@@ -10,8 +10,6 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
 
-" Repos on github
-
 " Snippets - Autocomplete
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
@@ -26,6 +24,7 @@ Plugin 'elzr/vim-json'
 Plugin '2072/PHP-Indenting-for-VIm'
 Plugin 'JulesWang/css.vim'
 " Plugin 'hail2u/vim-css3-syntax'
+" Plugin 'mkusher/padawan.vim'
 
 " Git
 Plugin 'tpope/vim-fugitive'
@@ -33,23 +32,23 @@ Plugin 'airblade/vim-gitgutter'
 
 " Files - Utilities
 Plugin 'scrooloose/nerdtree'
-Plugin 'kien/ctrlp.vim'
+Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'majutsushi/tagbar'
 Plugin 'tpope/vim-surround'
 Plugin 'mattn/emmet-vim'
 Plugin 'sjl/gundo.vim'
+Plugin 'tmhedberg/matchit'
 Plugin 'Raimondi/delimitMate'
 Plugin 'bling/vim-airline'
 
-" Color Schemas
+" Color Schemas & Icons
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'gilsondev/lizard'
 Plugin 'chriskempson/vim-tomorrow-theme'
+Plugin 'yosiat/oceanic-next-vim'
 
 " Magic 
-Plugin 'jaxbot/browserlink.vim' "Require  nodejs 
-" Plugin 'mattn/livestyle-vim'    "Requieres go and build 
-Plugin '907th/vim-auto-save'
+" Plugin '907th/vim-auto-save'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -79,7 +78,8 @@ if has('gui_running')
     set guioptions-=r  "remove right-hand scroll bar
 
     if has("x11")
-        set guifont=Droid\ Sans\ Mono\ for\ Powerline\ 10
+        set guifont=Droid\ Sans\ Mono\ for\ Powerline\ 11
+        let g:airline_powerline_fonts = 1
     elseif has("gui_macvim")
         set guifont=Menlo\ Regular:h14
     elseif has("gui_win32") " Windows specific options 
@@ -92,7 +92,7 @@ if has('gui_running')
 endif
 
 if $TERM == "xterm-256color"
-  set t_Co=256
+  set &t_Co=256
 endif
 
 " Set utf8 as standard encoding and en_US as the standard language
@@ -140,7 +140,9 @@ function! ToggleColours()
         colorscheme Tomorrow-Night
     elseif g:colors_name == 'Tomorrow-Night'
         colorscheme lizard
-    else
+    elseif g:colors_name == 'lizard'
+        colorscheme OceanicNext
+    elseif g:colors_name == 'OceanicNext'
         colorscheme solarized
         let g:solarized_contrast="high"
     endif
@@ -177,8 +179,8 @@ nnoremap <leader>i =i{<C-o>
 " Remap Esc on insert mode
 imap <leader><leader> <Esc>
 
-"Reload the first tav o chromium
-nnoremap ,, :silent !sh ~/scripts/reload_cromium.sh<CR>
+"Reload the first tab of chromium
+nnoremap <silent>,, :silent !sh ~/scripts/reload_cromium.sh<CR>
 
 "Semicolon Special remap
 inoremap <S-CR> <C-o>A;<CR>
@@ -199,7 +201,6 @@ inoremap <S-CR> <C-o>A;<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:syntastic_php_checkers=['php' ]       " Syntastics array options ejem chain of php phpcs phpms
                                             " phpcs and phpms must be installed
-                                            
 let g:syntastic_html_tidy_exec = 'tidy'
 
 let g:syntastic_javascript_checkers=['jshint'] 
@@ -325,7 +326,6 @@ imap <expr> <CR> pumvisible()
 " NERD Tree
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nmap <F2> :NERDTreeToggle<CR>
-
 "autocmd vimenter * if !argc() | NERDTree | endif        " Auto start with Vim
 let NERDTreeWinSize = 40
 let NERDTreeBookmarksFile = expand('~/.vim/NERDTreeBookmarks')
