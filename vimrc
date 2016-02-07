@@ -15,9 +15,9 @@ Plugin 'gmarik/Vundle.vim'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 Plugin 'ervandew/supertab'
-Plugin 'Shougo/neocomplete'
 Plugin 'chrisgillis/vim-bootstrap3-snippets'
 Plugin 'shawncplus/phpcomplete.vim'
+Plugin 'Shougo/neocomplete.vim'
 
 " Syntax
 Plugin 'scrooloose/syntastic'
@@ -25,8 +25,8 @@ Plugin 'evidens/vim-twig'
 Plugin 'elzr/vim-json'
 Plugin '2072/PHP-Indenting-for-VIm'
 Plugin 'JulesWang/css.vim'
-" Plugin 'hail2u/vim-css3-syntax'
-" Plugin 'mkusher/padawan.vim'
+Plugin 'hail2u/vim-css3-syntax'
+"Plugin 'mkusher/padawan.vim'
 
 " Git
 Plugin 'tpope/vim-fugitive'
@@ -42,12 +42,13 @@ Plugin 'sjl/gundo.vim'
 Plugin 'tmhedberg/matchit'
 Plugin 'Raimondi/delimitMate'
 Plugin 'bling/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 
 " Color Schemas & Icons
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'gilsondev/lizard'
 Plugin 'chriskempson/vim-tomorrow-theme'
-Plugin 'yosiat/oceanic-next-vim'
+Plugin 'mhartington/oceanic-next'
 
 " Magic 
 " Plugin '907th/vim-auto-save'
@@ -80,7 +81,7 @@ if has('gui_running')
     set guioptions-=r  "remove right-hand scroll bar
 
     if has("x11")
-        set guifont=Droid\ Sans\ Mono\ for\ Powerline\ 11
+        set guifont=Droid\ Sans\ Mono\ for\ Powerline\ 10
         let g:airline_powerline_fonts = 1
     elseif has("gui_macvim")
         set guifont=Menlo\ Regular:h14
@@ -130,8 +131,11 @@ set background=dark                          " We are dark people...
 "  Colors
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 try
-   colors solarized
-   let g:solarized_contrast="high"    "default value is normal
+   colors OceanicNext
+   set background=dark
+   let g:airline_theme='oceanicnext'
+   "colors solarized
+   "let g:solarized_contrast="high"    "default value is normal
 catch /^Vim\%((\a\+)\)\=:E185/
   " deal wit it
 endtry
@@ -144,6 +148,8 @@ function! ToggleColours()
         colorscheme lizard
     elseif g:colors_name == 'lizard'
         colorscheme OceanicNext
+        let g:airline_theme='oceanicnext'
+        set background=dark
     elseif g:colors_name == 'OceanicNext'
         colorscheme solarized
         let g:solarized_contrast="high"
@@ -165,7 +171,7 @@ endif
 let mapleader="ñ"
 
 nnoremap <leader>s :update<CR>
-nnoremap <F5> :buffers<CR>:buffer<Space>
+nnoremap <F5> :GundoToggle<CR>
 noremap <F6>  :bprev <CR>
 noremap <F7>  :bnext <CR>
 noremap <F8>  :bd <CR>
@@ -182,7 +188,7 @@ nnoremap <leader>i =i{<C-o>
 imap <leader><leader> <Esc>
 
 "Reload the first tab of chromium
-nnoremap <silent>,, :silent !sh ~/scripts/reload_cromium.sh<CR>
+nnoremap <silent>,, :silent !sh ~/vim/scripts/reload_cromium.sh<CR>
 
 "Semicolon Special remap
 inoremap <S-CR> <C-o>A;<CR>
@@ -244,7 +250,7 @@ let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 " Folders with Snippets
-let g:UltiSnipsSnippetDirectories=["UltiSnips", "coolsnippets", "coolsnippets/cier"]
+let g:UltiSnipsSnippetDirectories=["UltiSnips", "coolsnippets"]
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Tags and Omnicomplete configs
@@ -277,15 +283,8 @@ set completeopt=menuone,preview
 
  autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" CTAGS - UPDATE
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nnoremap <F11> :exe "!sh ~/.vim/tags/ctagsupdate.sh " . shellescape(expand('%:p:h')) . " ."<CR>
+" NEOCOMPLETE
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Neocomplete
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"Note: This option must set it in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
 " Disable AutoComplPop.
 let g:acp_enableAtStartup = 0
 " Use neocomplete.
@@ -313,7 +312,6 @@ let g:neocomplete#keyword_patterns['default'] = '\h\w*'
 inoremap <expr><C-g>     neocomplete#undo_completion()
 inoremap <expr><C-l>     neocomplete#complete_common_string()
 
-" Recommended key-mappings.
 " <CR>: close popup and save indent.
 inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
 function! s:my_cr_function()
@@ -326,37 +324,12 @@ inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 " <C-h>, <BS>: close popup and delete backword char.
 inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
 inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-" Close popup by <Space>.
-"inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
 
-" AutoComplPop like behavior.
-"let g:neocomplete#enable_auto_select = 1
 
-" Shell like behavior(not recommended).
-"set completeopt+=longest
-"let g:neocomplete#enable_auto_select = 1
-"let g:neocomplete#disable_auto_complete = 1
-"inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
-
-" Enable omni completion.
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-
-" Enable heavy omni completion.
-if !exists('g:neocomplete#sources#omni#input_patterns')
-  let g:neocomplete#sources#omni#input_patterns = {}
-endif
-
-let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
-"let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-"let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-
-" For perlomni.vim setting.
-" https://github.com/c9s/perlomni.vim
-let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" CTAGS - UPDATE
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+nnoremap <F11> :exe "!sh ~/.vim/scripts/ctagsupdate.sh " . shellescape(expand('%:p:h')) . " ."<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Text, tab and indent related
@@ -393,12 +366,11 @@ let delimitMate_expand_space = 1        " Add spaces both sides
 imap <C-J> <Plug>delimitMateJumpMany
 " Imaps S-tab used by Supertab and add new ready text argument
 imap <C-K> <Plug>delimitMateS-Tab
-" Imaps S-tab used by Supertab and add new ready text argument
-imap <C-l> <Plug>delimitMateS-Tab, '
+
 " Fix expand enter broken by pop-up menus
-imap <expr> <CR> pumvisible()
-                     \ ? "\<C-Y>"
-                     \ : "<Plug>delimitMateCR"
+"imap <expr> <CR> pumvisible()
+"                     \ ? "\<C-Y>"
+"                     \ : "<Plug>delimitMateCR"
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " NERD Tree
