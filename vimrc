@@ -188,7 +188,7 @@ nnoremap <leader>i =i{<C-o>
 imap <leader><leader> <Esc>
 
 "Reload the first tab of chromium
-nnoremap <silent>,, :silent !sh ~/vim/scripts/reload_cromium.sh<CR>
+nnoremap <silent>,, :silent !sh ~/.vim/scripts/reload_cromium.sh<CR>
 
 "Semicolon Special remap
 inoremap <S-CR> <C-o>A;<CR>
