@@ -46,8 +46,9 @@ Plugin 'vim-airline/vim-airline-themes'
 
 " Color Schemas & Icons
 Plugin 'altercation/vim-colors-solarized'
-Plugin 'gilsondev/lizard'
-Plugin 'chriskempson/vim-tomorrow-theme'
+Plugin 'morhetz/gruvbox'
+Plugin 'romainl/Apprentice'
+Plugin 'google/vim-colorscheme-primary'
 Plugin 'mhartington/oceanic-next'
 
 " Magic 
@@ -95,7 +96,7 @@ if has('gui_running')
 endif
 
 if $TERM == "xterm-256color"
-  set &t_Co=256
+  set t_Co=256
 endif
 
 " Set utf8 as standard encoding and en_US as the standard language
@@ -131,9 +132,9 @@ set background=dark                          " We are dark people...
 "  Colors
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 try
-   colors OceanicNext
    set background=dark
    let g:airline_theme='oceanicnext'
+   silent colors OceanicNext
    "colors solarized
    "let g:solarized_contrast="high"    "default value is normal
 catch /^Vim\%((\a\+)\)\=:E185/
@@ -143,13 +144,14 @@ endtry
 nnoremap <F9> :call ToggleColours()<CR>
 function! ToggleColours()
     if g:colors_name == 'solarized'
-        colorscheme Tomorrow-Night
-    elseif g:colors_name == 'Tomorrow-Night'
-        colorscheme lizard
-    elseif g:colors_name == 'lizard'
+        colorscheme apprentice
+    elseif g:colors_name == 'apprentice'
+        let g:gruvbox_contrast_dark='hard'
+        let g:airline_theme='gruvbox'
+        silent colors gruvbox
+    elseif g:colors_name == 'gruvbox'
         colorscheme OceanicNext
         let g:airline_theme='oceanicnext'
-        set background=dark
     elseif g:colors_name == 'OceanicNext'
         colorscheme solarized
         let g:solarized_contrast="high"
