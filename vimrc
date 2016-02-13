@@ -193,7 +193,7 @@ imap <leader><leader> <Esc>
 nnoremap <silent>,, :silent !sh ~/.vim/scripts/reload_cromium.sh<CR>
 
 "Semicolon Special remap
-inoremap <S-CR> <C-o>A;<CR>
+inoremap <S-CR> <C-o>A;
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "  Easy move line or visual block up down
@@ -225,7 +225,6 @@ let g:syntastic_stl_format = '[%E{Err: %fe #%e}%B{, }%W{Warn: %fw #%w}]' " Synta
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
-"let g:airline_theme="wombat"
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "CtrlP
