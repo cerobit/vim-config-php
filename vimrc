@@ -18,6 +18,7 @@ Plugin 'ervandew/supertab'
 Plugin 'chrisgillis/vim-bootstrap3-snippets'
 Plugin 'shawncplus/phpcomplete.vim'
 Plugin 'Shougo/neocomplete.vim'
+"Plugin 'ludovicchabant/vim-gutentags'
 
 " Syntax
 Plugin 'scrooloose/syntastic'
@@ -93,10 +94,8 @@ if has('gui_running')
 
 
     autocmd GUIEnter * set vb t_vb=
-endif
-
-if $TERM == "xterm-256color"
-  set t_Co=256
+elseif $TERM == "xterm-256color"
+    set t_Co=256
 endif
 
 " Set utf8 as standard encoding and en_US as the standard language
@@ -132,9 +131,8 @@ set background=dark                          " We are dark people...
 "  Colors
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 try
-   set background=dark
-   let g:airline_theme='oceanicnext'
    silent colors OceanicNext
+   let g:airline_theme='oceanicnext'
    "colors solarized
    "let g:solarized_contrast="high"    "default value is normal
 catch /^Vim\%((\a\+)\)\=:E185/
@@ -144,17 +142,19 @@ endtry
 nnoremap <F9> :call ToggleColours()<CR>
 function! ToggleColours()
     if g:colors_name == 'solarized'
-        colorscheme apprentice
+        let g:airline_theme='apprentice'
+        silent colors apprentice
     elseif g:colors_name == 'apprentice'
         let g:gruvbox_contrast_dark='hard'
         let g:airline_theme='gruvbox'
         silent colors gruvbox
     elseif g:colors_name == 'gruvbox'
-        colorscheme OceanicNext
         let g:airline_theme='oceanicnext'
+        silent colors OceanicNext
     elseif g:colors_name == 'OceanicNext'
-        colorscheme solarized
+        let g:airline_theme='solarized'
         let g:solarized_contrast="high"
+        silent colors solarized
     endif
 endfunction
 
@@ -285,8 +285,13 @@ set completeopt=menuone,preview
 
  autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 
-" NEOCOMPLETE
 
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Neocomplete
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"Note: This option must set it in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
 " Disable AutoComplPop.
 let g:acp_enableAtStartup = 0
 " Use neocomplete.
@@ -314,6 +319,7 @@ let g:neocomplete#keyword_patterns['default'] = '\h\w*'
 inoremap <expr><C-g>     neocomplete#undo_completion()
 inoremap <expr><C-l>     neocomplete#complete_common_string()
 
+" Recommended key-mappings.
 " <CR>: close popup and save indent.
 inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
 function! s:my_cr_function()
@@ -326,6 +332,25 @@ inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 " <C-h>, <BS>: close popup and delete backword char.
 inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
 inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+" Close popup by <Space>.
+"inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
+
+" AutoComplPop like behavior.
+"let g:neocomplete#enable_auto_select = 1
+
+" Shell like behavior(not recommended).
+"set completeopt+=longest
+"let g:neocomplete#enable_auto_select = 1
+"let g:neocomplete#disable_auto_complete = 1
+"inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
+
+" Enable heavy omni completion.
+if !exists('g:neocomplete#sources#omni#input_patterns')
+  let g:neocomplete#sources#omni#input_patterns = {}
+endif
+let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+"let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+"let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -362,7 +387,6 @@ command! -range=% -nargs=0 Space2Tab execute '<line1>,<line2>s#^\( \{'.&ts.'\}\)
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "  DelimitMate
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let delimitMate_expand_cr = 1
 let delimitMate_expand_space = 1        " Add spaces both sides
 " Imap easy out jump at the right
 imap <C-J> <Plug>delimitMateJumpMany

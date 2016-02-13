@@ -21,5 +21,19 @@ exec ctags -f ~/.vim/tags/tags \
     --exclude="*.js" \
     --exclude=".svn" \
     --exclude=".git" \
+    --exclude=".git/*" \
+    --exclude="app/*" \
+    --exclude="bin/*" \
+    --exclude="web/*" \
+    --exclude="tests/*" \
+    --exclude="*/Test/*" \
+    --exclude="*/Tests/*" \
+    --exclude="*test*" \
+    --exclude="*Form/Type*" \
+    --fields="+aimS" \
     $git_root'/src' \
-    $git_root'/vendor' \
+    $git_root'/vendor/sensio' \
+    $git_root'/vendor/symfony' \
+    $git_root'/vendor/doctrine' \
+    $git_root'/vendor/twig' \
+    $git_root'/vendor/friendsofsymfony' \
