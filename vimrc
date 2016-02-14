@@ -255,7 +255,7 @@ let g:UltiSnipsSnippetDirectories=["UltiSnips", "coolsnippets"]
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Tags and Omnicomplete configs
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set tags=~/.vim/tags/tags
+set tags=~/.vim/ctags/tags
 
 if has('autocmd')
   augroup OmniCompleteModes
