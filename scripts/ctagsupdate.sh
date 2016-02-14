@@ -9,7 +9,7 @@ done
 
 echo Root :$git_root
 
-exec ctags -f ~/.vim/tags/tags \
+exec ctags -f ~/.vim/ctags/tags \
     -h ".php" -R \
     --languages=PHP \
     --PHP-kinds=cfiv\
@@ -33,6 +33,6 @@ exec ctags -f ~/.vim/tags/tags \
     $git_root'/src' \
     $git_root'/vendor/sensio' \
     $git_root'/vendor/symfony' \
-    $git_root'/vendor/doctrine' \
+    #$git_root'/vendor/doctrine' \
     $git_root'/vendor/twig' \
     $git_root'/vendor/friendsofsymfony' \
