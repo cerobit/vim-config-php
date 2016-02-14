@@ -12,7 +12,7 @@ echo Root :$git_root
 exec ctags -f ~/.vim/tags/tags \
     -h ".php" -R \
     --languages=PHP \
-    --PHP-kinds=cfiv \
+    --PHP-kinds=cfiv\
     --totals=yes \
     --tag-relative=yes \
     --regex-PHP='/abstract\s+class\s+([^ ]+)/\1/c/' \
@@ -30,7 +30,6 @@ exec ctags -f ~/.vim/tags/tags \
     --exclude="*/Tests/*" \
     --exclude="*test*" \
     --exclude="*Form/Type*" \
-    --fields="+aimS" \
     $git_root'/src' \
     $git_root'/vendor/sensio' \
     $git_root'/vendor/symfony' \

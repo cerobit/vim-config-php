@@ -11,13 +11,13 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 
 " Snippets - Autocomplete
-"Plugin 'garbas/vim-snipmate'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
-Plugin 'ervandew/supertab'
 Plugin 'chrisgillis/vim-bootstrap3-snippets'
-Plugin 'shawncplus/phpcomplete.vim'
+Plugin 'ervandew/supertab'
 Plugin 'Shougo/neocomplete.vim'
+Plugin 'shawncplus/phpcomplete.vim'
+Plugin 'arnaud-lb/vim-php-namespace'
 "Plugin 'ludovicchabant/vim-gutentags'
 
 " Syntax
@@ -27,7 +27,6 @@ Plugin 'elzr/vim-json'
 Plugin '2072/PHP-Indenting-for-VIm'
 Plugin 'JulesWang/css.vim'
 Plugin 'hail2u/vim-css3-syntax'
-"Plugin 'mkusher/padawan.vim'
 
 " Git
 Plugin 'tpope/vim-fugitive'
@@ -326,22 +325,18 @@ function! s:my_cr_function()
   " For no inserting <CR> key.
   "return pumvisible() ? "\<C-y>" : "\<CR>"
 endfunction
+
 " <TAB>: completion.
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 " <C-h>, <BS>: close popup and delete backword char.
 inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
 inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+
 " Close popup by <Space>.
 "inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
 
 " AutoComplPop like behavior.
 "let g:neocomplete#enable_auto_select = 1
-
-" Shell like behavior(not recommended).
-"set completeopt+=longest
-"let g:neocomplete#enable_auto_select = 1
-"let g:neocomplete#disable_auto_complete = 1
-"inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
 
 " Enable heavy omni completion.
 if !exists('g:neocomplete#sources#omni#input_patterns')
@@ -352,6 +347,15 @@ let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
 "let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
 
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Vim-Php-Namespace
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! IPhpInsertUse()
+    call PhpInsertUse()
+    call feedkeys('a',  'n')
+endfunction
+autocmd FileType php inoremap <Leader>u <Esc>:call IPhpInsertUse()<CR>
+autocmd FileType php noremap <Leader>u :call PhpInsertUse()<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " CTAGS - UPDATE
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -387,10 +391,10 @@ command! -range=% -nargs=0 Space2Tab execute '<line1>,<line2>s#^\( \{'.&ts.'\}\)
 "  DelimitMate
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let delimitMate_expand_space = 1        " Add spaces both sides
-" Imap easy out jump at the right
-imap <C-J> <Plug>delimitMateJumpMany
 " Imaps S-tab used by Supertab and add new ready text argument
-imap <C-K> <Plug>delimitMateS-Tab
+imap <C-j> <Plug>delimitMateS-Tab
+" Imap easy out jump at the right
+imap <C-jj> <Plug>delimitMateJumpMany
 
 " Fix expand enter broken by pop-up menus
 "imap <expr> <CR> pumvisible()
