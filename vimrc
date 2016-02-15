@@ -189,11 +189,15 @@ nnoremap <leader>i =i{<C-o>
 " Remap Esc on insert mode
 imap <leader><leader> <Esc>
 
+
 "Reload the first tab of chromium
 nnoremap <silent>,, :silent !sh ~/.vim/scripts/reload_cromium.sh<CR>
 
-"Semicolon Special remap
-inoremap <S-CR> <C-o>A;
+" Semicolon at end
+inoremap <S-CR> <End>;<CR>
+
+"Fast Save refresh chromium
+map <Esc><Esc> :w<CR>:silent !sh ~/.vim/scripts/reload_cromium.sh<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "  Easy move line or visual block up down
