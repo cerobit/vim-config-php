@@ -17,7 +17,7 @@ Plugin 'chrisgillis/vim-bootstrap3-snippets'
 Plugin 'ervandew/supertab'
 Plugin 'Shougo/neocomplete.vim'
 Plugin 'shawncplus/phpcomplete.vim'
-Plugin 'violetyk/neocomplete-php.vim'
+"Plugin 'violetyk/neocomplete-php.vim'
 Plugin 'arnaud-lb/vim-php-namespace'
 "Plugin 'ludovicchabant/vim-gutentags'
 
@@ -41,7 +41,7 @@ Plugin 'tpope/vim-surround'
 Plugin 'mattn/emmet-vim'
 Plugin 'sjl/gundo.vim'
 Plugin 'tmhedberg/matchit'
-Plugin 'Raimondi/delimitMate'
+Plugin 'jiangmiao/auto-pairs'
 Plugin 'bling/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 
@@ -400,19 +400,11 @@ set wrap                        "Wrap lines
 command! -range=% -nargs=0 Tab2Space execute '<line1>,<line2>s#^\t\+#\=repeat(" ", len(submatch(0))*' . &ts . ')'
 command! -range=% -nargs=0 Space2Tab execute '<line1>,<line2>s#^\( \{'.&ts.'\}\)\+#\=repeat("\t", len(submatch(0))/' . &ts . ')'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"  DelimitMate
+" Auto-Pairs
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let delimitMate_expand_space = 1        " Add spaces both sides
-" Imaps S-tab used by Supertab and add new ready text argument
-imap <C-j> <Plug>delimitMateS-Tab
-" Imap easy out jump at the right
-imap <C-jj> <Plug>delimitMateJumpMany
-
-" Fix expand enter broken by pop-up menus
-"imap <expr> <CR> pumvisible()
-"                     \ ? "\<C-Y>"
-"                     \ : "<Plug>delimitMateCR"
-
+let g:AutoPairsShortcutJump = '<C-j>'
+let g:AutoPairsShortcutToggle = '<C-k>'
+let g:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`','%':'%'}
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " NERD Tree
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -429,7 +421,6 @@ let NERDTreeIgnore=['\.o$', '\.so$', '\.bmp$', '\.class$', '^core.*', '\.vim$', 
                    \'\.pyc$', '\.pyo$', '\.jpg$', '\.gif$','\.png$', '\.ico$', '\.exe$',
                    \'\.cod$', '\.obj$', '\.mac$', '\.1st', '\.dll$', '\.pyd$', '\.zip$',
                    \'\.modules$','\.git', '\.hg', '\.svn', '\.bzr' ]
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Git Gutter Custom Colors
