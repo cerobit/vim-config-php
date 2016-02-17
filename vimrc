@@ -17,7 +17,6 @@ Plugin 'chrisgillis/vim-bootstrap3-snippets'
 Plugin 'ervandew/supertab'
 Plugin 'Shougo/neocomplete.vim'
 Plugin 'shawncplus/phpcomplete.vim'
-"Plugin 'violetyk/neocomplete-php.vim'
 Plugin 'arnaud-lb/vim-php-namespace'
 "Plugin 'ludovicchabant/vim-gutentags'
 
@@ -275,8 +274,9 @@ if has('autocmd')
 endif
 
 
-set complete=.,w,b,t,i,k
-set completeopt=menuone,preview
+"set complete=.,w,b,t,i,k
+set complete=.,k,w,t
+set completeopt=longest,menuone
 
  "If not specific completion scripts exits use vim general code
  if has("autocmd") && exists("+omnifunc")
@@ -295,10 +295,9 @@ set completeopt=menuone,preview
 let g:phpcomplete_complete_for_unknown_classes = 1
 let g:phpcomplete_search_tags_for_variables = 1
 let g:phpcomplete_parse_docblock_comments = 1
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Neocomplete
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
 "Note: This option must set it in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
 " Disable AutoComplPop.
 let g:acp_enableAtStartup = 0
@@ -308,10 +307,15 @@ let g:neocomplete#enable_at_startup = 1
 let g:neocomplete#enable_smart_case = 1
 " Set minimum syntax keyword length.
 let g:neocomplete#sources#syntax#min_keyword_length = 3
+" AutoComplPop like behavior.
+let g:neocomplete#enable_auto_select = 1
+" Set max syntax keyword length.
+let g:neocomplete#sources#buffer#max_keyword_width = 20
+
 let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
 
 " Search from neocomplete, omni candidates, vim keywords.
-let g:neocomplete#fallback_mappings = ["\<C-x>\<C-o>", "\<C-x>\<C-n>"]
+" let g:neocomplete#fallback_mappings = ["\<C-x>\<C-o>", "\<C-x>\<C-n>"]
 
 " Define dictionary.
 let g:neocomplete#sources#dictionary#dictionaries = {
@@ -334,9 +338,9 @@ inoremap <expr><C-l>     neocomplete#complete_common_string()
 " <CR>: close popup and save indent.
 inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
 function! s:my_cr_function()
-  return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
+  " return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
   " For no inserting <CR> key.
-  "return pumvisible() ? "\<C-y>" : "\<CR>"
+  return pumvisible() ? "\<C-y>" : "\<CR>"
 endfunction
 
 " <TAB>: completion.
@@ -346,8 +350,6 @@ inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
 inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
 
 
-" AutoComplPop like behavior.
-"let g:neocomplete#enable_auto_select = 1
 
 " Enable heavy omni completion.
 if !exists('g:neocomplete#sources#omni#input_patterns')
