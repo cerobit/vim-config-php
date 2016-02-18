@@ -91,8 +91,8 @@ if has('gui_running')
         au GUIEnter * simalt ~x
     endif
 
-
     autocmd GUIEnter * set vb t_vb=
+
 elseif $TERM == "xterm-256color"
     set t_Co=256
 endif
@@ -173,30 +173,27 @@ let mapleader="ñ"
 
 nnoremap <leader>s :update<CR>
 nnoremap <F5> :GundoToggle<CR>
-noremap <F6>  :bprev <CR>
-noremap <F7>  :bnext <CR>
-noremap <F8>  :bd <CR>
+noremap  <F6>  :bprev <CR>
+noremap  <F7>  :bnext <CR>
+noremap  <F8>  :bd <CR>
 nnoremap <leader>j :
 " Fast Jump to function
 nnoremap <leader>f :/function<CR>zz:nohlsearch<CR>
 " Tagbar Activation
-noremap <silent><leader>t :TagbarOpenAutoClose<CR>
+noremap  <silent><leader>t :TagbarOpenAutoClose<CR>
 " Clean highlight after search
-noremap <silent>// :nohlsearch<CR>
+noremap  <silent>// :nohlsearch<CR>
 " Fast Indent code block inner {
 nnoremap <leader>i =i{<C-o>
-" Remap Esc on insert mode
-imap <leader><leader> <Esc>
-
 
 "Reload the first tab of chromium
 nnoremap <silent>,, :silent !sh ~/.vim/scripts/reload_cromium.sh<CR>
 
 " Semicolon at end
-inoremap <S-CR> <End>;<CR>
+inoremap <S-CR> <End>;
 
-"Fast Save refresh chromium
-map <Esc><Esc> :w<CR>:silent !sh ~/.vim/scripts/reload_cromium.sh<CR>
+"Save on exit wont work if gvim loose focus
+"autocmd InsertLeave * write
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "  Easy move line or visual block up down
@@ -248,7 +245,7 @@ let g:ctrlp_root_markers = ['src/', '.git/','.hg/','_darcs','.bzr']
 " Ultisnips
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Supertab
-let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
+let g:SuperTabDefaultCompletionType = "<c-x><c-u>"
 
 "let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
@@ -275,7 +272,7 @@ endif
 
 
 "set complete=.,w,b,t,i,k
-set complete=.,k,w,t
+set complete=.,t,k
 set completeopt=longest,menuone
 
  "If not specific completion scripts exits use vim general code
@@ -349,7 +346,20 @@ inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
 inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
 
+" Shortcut for toggle neocomplete
+noremap <leader>n :NeoCompleteToggle<CR>
 
+""""""""""""""""""""""""""""""""""
+"  For TESTING WITHOUT SUPERTAB  "
+""""""""""""""""""""""""""""""""""
+
+" SuperTab like snippets behavior
+"imap <expr><TAB> pumvisible() ? "\<C-N>" : "\<TAB>"
+"smap <expr><TAB> pumvisible() ? "\<C-N>" : "\<TAB>"
+"imap <expr><S-TAB> pumvisible() ? "\<C-P>" : "\<S-TAB>"
+"smap <expr><S-TAB> pumvisible() ? "\<C-P>" : "\<S-TAB>"
+
+""""""""""""""""""""""""""""""""""
 
 " Enable heavy omni completion.
 if !exists('g:neocomplete#sources#omni#input_patterns')
@@ -443,7 +453,7 @@ set laststatus=2      " show status line all the time
 set scrolloff=10      " don't scroll any closer to top/bottom
 set sidescrolloff=5   " don't scroll any closer to left/right
 
-" NOTE: The statusline settings below is ignored if powerline is loaded.
+" NOTE: The statusline settings below is ignored if Airline is loaded.
 set statusline=%t                                                                   " tail of the filename
 set statusline+=\                                                                   " whitespace
 set statusline+=[%{strlen(&fenc)?&fenc:'none'},                                     " file encoding
