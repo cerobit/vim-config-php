@@ -189,6 +189,10 @@ nnoremap <leader>i =i{<C-o>
 "Reload the first tab of chromium
 nnoremap <silent>,, :silent !sh ~/.vim/scripts/reload_cromium.sh<CR>
 
+" Center on scroll
+nnoremap <C-u> <C-u>zz
+nnoremap <C-d> <C-d>zz
+
 " Semicolon at end
 inoremap <S-CR> <End>;
 
