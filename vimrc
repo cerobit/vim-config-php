@@ -292,6 +292,7 @@ set completeopt=longest,menuone
 let g:phpcomplete_complete_for_unknown_classes = 1
 let g:phpcomplete_search_tags_for_variables = 1
 let g:phpcomplete_parse_docblock_comments = 1
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Neocomplete
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -302,17 +303,25 @@ let g:acp_enableAtStartup = 0
 let g:neocomplete#enable_at_startup = 1
 " Use smartcase.
 let g:neocomplete#enable_smart_case = 1
-" Set minimum syntax keyword length.
-let g:neocomplete#sources#syntax#min_keyword_length = 3
+let g:neocomplete#enable_camel_case = 1
+" Use fuzzy completion.
+let g:neocomplete#enable_fuzzy_completion = 1
+" Set auto completion length.
+let g:neocomplete#auto_completion_start_length = 2
+" Set minimum keyword length.
+let g:neocomplete#min_keyword_length = 3
 " AutoComplPop like behavior.
 let g:neocomplete#enable_auto_select = 1
+let g:neocomplete#enable_cursor_hold_i = 0
+
 " Set max syntax keyword length.
 let g:neocomplete#sources#buffer#max_keyword_width = 20
+" Max list
+let g:neocomplete#max_list = 20
 
-let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+"let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
 
 " Search from neocomplete, omni candidates, vim keywords.
-" let g:neocomplete#fallback_mappings = ["\<C-x>\<C-o>", "\<C-x>\<C-n>"]
 
 " Define dictionary.
 let g:neocomplete#sources#dictionary#dictionaries = {
@@ -326,6 +335,17 @@ if !exists('g:neocomplete#keyword_patterns')
     let g:neocomplete#keyword_patterns = {}
 endif
 let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+
+if !exists('g:neocomplete#sources#omni#input_patterns')
+  let g:neocomplete#sources#omni#input_patterns = {}
+endif
+let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+"let g:neocomplete#sources#omni#input_patterns.php =
+"      \'\h\w*\|[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
+
+" <TAB>: completion.
+" Shortcut for toggle neocomplete
+noremap <leader>n :NeoCompleteToggle<CR>
 
 " Plugin key-mappings.
 inoremap <expr><C-g>     neocomplete#undo_completion()
@@ -349,30 +369,6 @@ inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
 " Shortcut for toggle neocomplete
 noremap <leader>n :NeoCompleteToggle<CR>
 
-""""""""""""""""""""""""""""""""""
-"  For TESTING WITHOUT SUPERTAB  "
-""""""""""""""""""""""""""""""""""
-
-" SuperTab like snippets behavior
-"imap <expr><TAB> pumvisible() ? "\<C-N>" : "\<TAB>"
-"smap <expr><TAB> pumvisible() ? "\<C-N>" : "\<TAB>"
-"imap <expr><S-TAB> pumvisible() ? "\<C-P>" : "\<S-TAB>"
-"smap <expr><S-TAB> pumvisible() ? "\<C-P>" : "\<S-TAB>"
-
-""""""""""""""""""""""""""""""""""
-
-" Enable heavy omni completion.
-if !exists('g:neocomplete#sources#omni#input_patterns')
-  let g:neocomplete#sources#omni#input_patterns = {}
-endif
-"let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
-let g:neocomplete#sources#omni#input_patterns.php =
-            \'\h\w*\|[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
-
-"if !exists('g:neocomplete#force_omni_input_patterns')
-"  let g:neocomplete#force_omni_input_patterns  = {}
-"endif
-"let g:neocomplete#force_omni_input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Vim-Php-Namespace
