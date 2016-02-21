@@ -276,7 +276,7 @@ endif
 
 
 "set complete=.,w,b,t,i,k
-set complete=.,t,k
+set complete=.,t,i
 set completeopt=longest,menuone
 
  "If not specific completion scripts exits use vim general code
@@ -318,14 +318,15 @@ let g:neocomplete#min_keyword_length = 3
 let g:neocomplete#enable_auto_select = 1
 let g:neocomplete#enable_cursor_hold_i = 0
 
+"let g:neocomplete#fallback_mappings =
+"            \ ["\<C-x>\<C-o>", "\<C-x>\<C-n>"]
+
 " Set max syntax keyword length.
 let g:neocomplete#sources#buffer#max_keyword_width = 20
 " Max list
 let g:neocomplete#max_list = 20
 
-"let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
-
-" Search from neocomplete, omni candidates, vim keywords.
+let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
 
 " Define dictionary.
 let g:neocomplete#sources#dictionary#dictionaries = {
@@ -343,9 +344,9 @@ let g:neocomplete#keyword_patterns['default'] = '\h\w*'
 if !exists('g:neocomplete#sources#omni#input_patterns')
   let g:neocomplete#sources#omni#input_patterns = {}
 endif
-let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
-"let g:neocomplete#sources#omni#input_patterns.php =
-"      \'\h\w*\|[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
+"let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+let g:neocomplete#sources#omni#input_patterns.php =
+      \'\h\w*\|[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
 
 " <TAB>: completion.
 " Shortcut for toggle neocomplete
@@ -364,11 +365,20 @@ function! s:my_cr_function()
   return pumvisible() ? "\<C-y>" : "\<CR>"
 endfunction
 
-" <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 " <C-h>, <BS>: close popup and delete backword char.
 inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
 inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+
+" <TAB>: completion.
+"inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+" <TAB> completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" :
+        \ <SID>check_back_space() ? "\<TAB>" :
+        \ neocomplete#start_manual_complete()
+  function! s:check_back_space() "{{{
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~ '\s'
+  endfunction"}}}
 
 " Shortcut for toggle neocomplete
 noremap <leader>n :NeoCompleteToggle<CR>
