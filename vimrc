@@ -258,12 +258,18 @@ function! g:UltiSnips_Complete()
         else
             call UltiSnips#JumpForwards()
             if g:ulti_jump_forwards_res == 0
-               return neocomplete#start_manual_complete()
+                return  <SID>check_back_space() ? "\<TAB>"
+                            \: neocomplete#start_manual_complete()
             endif
         endif
     endif
     return ""
 endfunction
+
+function! s:check_back_space() "{{{
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~ '\s'
+endfunction "}}}
 
 inoremap <TAB> <C-R>=g:UltiSnips_Complete()<cr>
 
@@ -329,18 +335,16 @@ let g:neocomplete#enable_fuzzy_completion = 1
 " Set auto completion length.
 let g:neocomplete#auto_completion_start_length = 2
 " Set minimum keyword length.
-let g:neocomplete#min_keyword_length = 3
+let g:neocomplete#min_keyword_length = 4
 " AutoComplPop like behavior.
 let g:neocomplete#enable_auto_select = 1
-let g:neocomplete#enable_cursor_hold_i = 0
+" Set max syntax keyword length.
+let g:neocomplete#sources#buffer#max_keyword_width = 40
+" Max list
+let g:neocomplete#max_list = 20
 
 "let g:neocomplete#fallback_mappings =
 "            \ ["\<C-x>\<C-o>", "\<C-x>\<C-n>"]
-
-" Set max syntax keyword length.
-let g:neocomplete#sources#buffer#max_keyword_width = 20
-" Max list
-let g:neocomplete#max_list = 20
 
 let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
 
@@ -360,7 +364,6 @@ let g:neocomplete#keyword_patterns['default'] = '\h\w*'
 if !exists('g:neocomplete#sources#omni#input_patterns')
   let g:neocomplete#sources#omni#input_patterns = {}
 endif
-"let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
 let g:neocomplete#sources#omni#input_patterns.php =
       \'\h\w*\|[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
 
