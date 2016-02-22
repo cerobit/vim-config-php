@@ -14,7 +14,7 @@ Plugin 'gmarik/Vundle.vim'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 Plugin 'chrisgillis/vim-bootstrap3-snippets'
-Plugin 'ervandew/supertab'
+"Plugin 'ervandew/supertab'
 Plugin 'Shougo/neocomplete.vim'
 Plugin 'shawncplus/phpcomplete.vim'
 Plugin 'arnaud-lb/vim-php-namespace'
@@ -246,12 +246,28 @@ let g:ctrlp_root_markers = ['src/', '.git/','.hg/','_darcs','.bzr']
 
 "let g:ctrlp_extensions = ['tag']
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Ultisnips
+" Ultisnips - Integration Neocomplete
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Supertab
 let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
 
-"let g:UltiSnipsExpandTrigger="<tab>"
+function! g:UltiSnips_Complete()
+    call UltiSnips#ExpandSnippet()
+    if g:ulti_expand_res == 0
+        if pumvisible()
+            return "\<C-n>"
+        else
+            call UltiSnips#JumpForwards()
+            if g:ulti_jump_forwards_res == 0
+               return neocomplete#start_manual_complete()
+            endif
+        endif
+    endif
+    return ""
+endfunction
+
+inoremap <TAB> <C-R>=g:UltiSnips_Complete()<cr>
+
+let g:UltiSnipsExpandTrigger="<NOP>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 " Folders with Snippets
@@ -368,20 +384,6 @@ endfunction
 " <C-h>, <BS>: close popup and delete backword char.
 inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
 inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-
-" <TAB>: completion.
-"inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-" <TAB> completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" :
-        \ <SID>check_back_space() ? "\<TAB>" :
-        \ neocomplete#start_manual_complete()
-  function! s:check_back_space() "{{{
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~ '\s'
-  endfunction"}}}
-
-" Shortcut for toggle neocomplete
-noremap <leader>n :NeoCompleteToggle<CR>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
