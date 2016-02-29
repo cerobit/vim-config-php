@@ -25,6 +25,7 @@ Plugin 'scrooloose/syntastic'
 Plugin 'evidens/vim-twig'
 Plugin 'elzr/vim-json'
 Plugin '2072/PHP-Indenting-for-VIm'
+Plugin 'Yggdroot/indentLine'
 Plugin 'JulesWang/css.vim'
 Plugin 'hail2u/vim-css3-syntax'
 
@@ -229,6 +230,19 @@ let g:syntastic_stl_format = '[%E{Err: %fe #%e}%B{, }%W{Warn: %fw #%w}]' " Synta
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Indentline
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Vim
+let g:indentLine_color_term = 239
+
+"GVim
+let g:indentLine_color_gui = '#A4E57E'
+
+" none X terminal
+let g:indentLine_color_tty_light = 7 " (default: 4)
+let g:indentLine_color_dark = 1 " (default: 2)
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "CtrlP
@@ -424,8 +438,7 @@ set showbreak=..
 set lbr
 set tw=500
 
-set ai                          "Auto indent
-set si                          "Smart indent
+set autoindent                  "Auto indent
 set wrap                        "Wrap lines
 
 command! -range=% -nargs=0 Tab2Space execute '<line1>,<line2>s#^\t\+#\=repeat(" ", len(submatch(0))*' . &ts . ')'
