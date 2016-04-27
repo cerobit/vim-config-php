@@ -46,11 +46,12 @@ Plugin 'bling/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 
 " Color Schemas & Icons
+Plugin 'mhartington/oceanic-next'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'morhetz/gruvbox'
-Plugin 'romainl/Apprentice'
-Plugin 'google/vim-colorscheme-primary'
-Plugin 'mhartington/oceanic-next'
+Plugin 'w0ng/vim-hybrid'
+Plugin 'atelierbram/vim-colors_duotones'
+"Plugin 'google/vim-colorscheme-primary'
 
 " Magic 
 " Plugin '907th/vim-auto-save'
@@ -113,7 +114,7 @@ set wildmenu                                " Wild menu
 set wildmode=longest,list,full              " Wild menu options
 set cpoptions+=$
 set pastetoggle=<F3>                        " Easy paste from SO
-syntax on                                   " Switch syntax highlighting on, when the terminal has colors
+syntax enable                               " Switch syntax highlighting
                                             " also switch on highlighting the last used search pattern.
 
 set hlsearch                                " Highlight search results
@@ -141,20 +142,39 @@ endtry
 
 nnoremap <F9> :call ToggleColours()<CR>
 function! ToggleColours()
-    if g:colors_name == 'solarized'
-        let g:airline_theme='apprentice'
-        silent colors apprentice
-    elseif g:colors_name == 'apprentice'
+    if g:colors_name == 'OceanicNext'
+        let g:airline_theme='solarized'
+        let g:solarized_contrast="high"
+        silent colors solarized
+    elseif g:colors_name == 'solarized'
         let g:gruvbox_contrast_dark='hard'
         let g:airline_theme='gruvbox'
         silent colors gruvbox
     elseif g:colors_name == 'gruvbox'
+        silent colors duotone-dark
+    elseif g:colors_name == 'duotone-dark'
+        silent colors duotone-darkearth
+    elseif g:colors_name == 'duotone-darkearth'
+        silent colors duotone-darkdesert
+    elseif g:colors_name == 'duotone-darkdesert'
+        silent colors duotone-darkforest
+    elseif g:colors_name == 'duotone-darkforest'
+        silent colors duotone-darkpark
+    elseif g:colors_name == 'duotone-darkpark'
+        silent colors duotone-darkmeadow
+    elseif g:colors_name == 'duotone-darkmeadow'
+        silent colors duotone-darksea
+    elseif g:colors_name == 'duotone-darksea'
+        silent colors duotone-darkpool
+    elseif g:colors_name == 'duotone-darkpool'
+        silent colors duotone-darkspace
+    elseif g:colors_name == 'duotone-darkspace'
+        silent colors duotone-darkheath
+    elseif g:colors_name == 'duotone-darkheath'
+        silent colors duotone-darkcave
+    elseif g:colors_name == 'duotone-darkcave'
         let g:airline_theme='oceanicnext'
         silent colors OceanicNext
-    elseif g:colors_name == 'OceanicNext'
-        let g:airline_theme='solarized'
-        let g:solarized_contrast="high"
-        silent colors solarized
     endif
 endfunction
 
@@ -197,6 +217,7 @@ nnoremap <C-d> <C-d>zz
 " Semicolon at end
 inoremap <S-CR> <End>;
 
+
 "Save on exit wont work if gvim loose focus
 "autocmd InsertLeave * write
 
@@ -233,15 +254,9 @@ let g:airline#extensions#tabline#fnamemod = ':t'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Indentline
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Vim
-let g:indentLine_color_term = 239
-
-"GVim
-let g:indentLine_color_gui = '#A4E57E'
-
-" none X terminal
-let g:indentLine_color_tty_light = 7 " (default: 4)
+"let g:indentLine_color_tty_light = 7 " (default: 4)
 let g:indentLine_color_dark = 1 " (default: 2)
+"let g:indentLine_char = '┊'
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -262,7 +277,8 @@ let g:ctrlp_root_markers = ['src/', '.git/','.hg/','_darcs','.bzr']
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Ultisnips - Integration Neocomplete
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
+" Custon TAB function to activate completion on 
+" Ultisnips + Neocomplete
 
 function! g:UltiSnips_Complete()
     call UltiSnips#ExpandSnippet()
@@ -312,7 +328,7 @@ endif
 
 
 "set complete=.,w,b,t,i,k
-set complete=.,t,i
+set complete=.,t,b,i
 set completeopt=longest,menuone
 
  "If not specific completion scripts exits use vim general code
@@ -342,23 +358,18 @@ let g:acp_enableAtStartup = 0
 " Use neocomplete.
 let g:neocomplete#enable_at_startup = 1
 " Use smartcase.
-let g:neocomplete#enable_smart_case = 1
+"let g:neocomplete#enable_smart_case = 1
 let g:neocomplete#enable_camel_case = 1
 " Use fuzzy completion.
 let g:neocomplete#enable_fuzzy_completion = 1
-" Set auto completion length.
-let g:neocomplete#auto_completion_start_length = 2
-" Set minimum keyword length.
-let g:neocomplete#min_keyword_length = 4
+" Set minimum syntax keyword length.
+let g:neocomplete#sources#syntax#min_keyword_length = 3
 " AutoComplPop like behavior.
 let g:neocomplete#enable_auto_select = 1
 " Set max syntax keyword length.
 let g:neocomplete#sources#buffer#max_keyword_width = 40
 " Max list
 let g:neocomplete#max_list = 20
-
-"let g:neocomplete#fallback_mappings =
-"            \ ["\<C-x>\<C-o>", "\<C-x>\<C-n>"]
 
 let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
 
