@@ -84,7 +84,9 @@ if has('gui_running')
     set guioptions-=r  "remove right-hand scroll bar
 
     if has("x11")
-        set guifont=Droid\ Sans\ Mono\ for\ Powerline\ 10
+        set guifont=Dejavu\ Sans\ Mono\ for\ Powerline\ 10
+        "set guifont=Inconsolata-g\ for\ Powerline\ 10
+        "set guifont=Hack-Regular\ 10
         let g:airline_powerline_fonts = 1
     elseif has("gui_macvim")
         set guifont=Menlo\ Regular:h14
@@ -127,6 +129,7 @@ set ignorecase                               " Ignore case when searching
 set smartcase                                " When searching try to be smart about cases
 set background=dark                          " We are dark people...
 
+let g:gundo_prefer_python3 = 1
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "  Colors
@@ -328,8 +331,8 @@ endif
 
 
 "set complete=.,w,b,t,i,k
-set complete=.,t,b,i
-set completeopt=longest,menuone
+set complete=.,t,i
+set completeopt=longest,menuone "like an editor
 
  "If not specific completion scripts exits use vim general code
  if has("autocmd") && exists("+omnifunc")
@@ -352,18 +355,10 @@ let g:phpcomplete_parse_docblock_comments = 1
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Neocomplete
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"Note: This option must set it in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
 " Disable AutoComplPop.
 let g:acp_enableAtStartup = 0
 " Use neocomplete.
 let g:neocomplete#enable_at_startup = 1
-" Use smartcase.
-"let g:neocomplete#enable_smart_case = 1
-let g:neocomplete#enable_camel_case = 1
-" Use fuzzy completion.
-let g:neocomplete#enable_fuzzy_completion = 1
-" Set minimum syntax keyword length.
-let g:neocomplete#sources#syntax#min_keyword_length = 3
 " AutoComplPop like behavior.
 let g:neocomplete#enable_auto_select = 1
 " Set max syntax keyword length.
@@ -371,7 +366,14 @@ let g:neocomplete#sources#buffer#max_keyword_width = 40
 " Max list
 let g:neocomplete#max_list = 20
 
-let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+" Use smartcase.
+let g:neocomplete#enable_smart_case                 = 1
+" Set minimum syntax keyword length.
+let g:neocomplete#sources#syntax#min_keyword_length = 3
+let g:neocomplete#lock_buffer_name_pattern          = '\*ku\*'
+let g:neocomplete#enable_auto_delimiter             = 1
+let g:neocomplete#enable_refresh_always             = 1
+
 
 " Define dictionary.
 let g:neocomplete#sources#dictionary#dictionaries = {
@@ -389,6 +391,7 @@ let g:neocomplete#keyword_patterns['default'] = '\h\w*'
 if !exists('g:neocomplete#sources#omni#input_patterns')
   let g:neocomplete#sources#omni#input_patterns = {}
 endif
+
 let g:neocomplete#sources#omni#input_patterns.php =
       \'\h\w*\|[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
 
