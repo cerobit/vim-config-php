@@ -84,7 +84,7 @@ if has('gui_running')
     set guioptions-=r  "remove right-hand scroll bar
 
     if has("x11")
-        set guifont=Dejavu\ Sans\ Mono\ for\ Powerline\ 10
+        set guifont=Droid\ Sans\ Mono\ for\ Powerline\ 10
         "set guifont=Inconsolata-g\ for\ Powerline\ 10
         "set guifont=Hack-Regular\ 10
         let g:airline_powerline_fonts = 1
