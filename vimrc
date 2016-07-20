@@ -1,75 +1,57 @@
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
-
-" let Vundle manage Vundle, required
-Plugin 'gmarik/Vundle.vim'
-
+" VimPlug
+call plug#begin('~/.vim/plugged')
 " Snippets - Autocomplete
-Plugin 'SirVer/ultisnips'
-Plugin 'honza/vim-snippets'
-Plugin 'chrisgillis/vim-bootstrap3-snippets'
-"Plugin 'ervandew/supertab'
-Plugin 'Shougo/neocomplete.vim'
-Plugin 'shawncplus/phpcomplete.vim'
-Plugin 'arnaud-lb/vim-php-namespace'
-"Plugin 'ludovicchabant/vim-gutentags'
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+Plug 'chrisgillis/vim-bootstrap3-snippets'
+"Plug 'ervandew/supertab'
+Plug 'Shougo/neocomplete.vim'
+Plug 'shawncplus/phpcomplete.vim'
+Plug 'arnaud-lb/vim-php-namespace'
+"Plug 'ludovicchabant/vim-gutentags'
 
 " Syntax
-Plugin 'scrooloose/syntastic'
-Plugin 'evidens/vim-twig'
-Plugin 'elzr/vim-json'
-Plugin '2072/PHP-Indenting-for-VIm'
-Plugin 'Yggdroot/indentLine'
-Plugin 'JulesWang/css.vim'
-Plugin 'hail2u/vim-css3-syntax'
+Plug 'scrooloose/syntastic'
+Plug 'evidens/vim-twig'
+Plug 'elzr/vim-json'
+Plug '2072/PHP-Indenting-for-VIm'
+Plug 'Yggdroot/indentLine'
+Plug 'JulesWang/css.vim'
+Plug 'hail2u/vim-css3-syntax'
 
 " Git
-Plugin 'tpope/vim-fugitive'
-Plugin 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
 
 " Files - Utilities
-Plugin 'scrooloose/nerdtree'
-Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'majutsushi/tagbar'
-Plugin 'tpope/vim-surround'
-Plugin 'mattn/emmet-vim'
-Plugin 'sjl/gundo.vim'
-Plugin 'tmhedberg/matchit'
-Plugin 'jiangmiao/auto-pairs'
-Plugin 'bling/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
+Plug 'scrooloose/nerdtree'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'majutsushi/tagbar'
+Plug 'tpope/vim-surround'
+Plug 'mattn/emmet-vim'
+Plug 'sjl/gundo.vim'
+Plug 'tmhedberg/matchit'
+Plug 'jiangmiao/auto-pairs'
+Plug 'bling/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
 " Color Schemas & Icons
-Plugin 'mhartington/oceanic-next'
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'morhetz/gruvbox'
-Plugin 'w0ng/vim-hybrid'
-Plugin 'atelierbram/vim-colors_duotones'
-"Plugin 'google/vim-colorscheme-primary'
+Plug 'mhartington/oceanic-next'
+Plug 'altercation/vim-colors-solarized'
+Plug 'morhetz/gruvbox'
+Plug 'w0ng/vim-hybrid'
+Plug 'atelierbram/vim-colors_duotones'
+"Plug 'google/vim-colorscheme-primary'
 
 " Magic 
-" Plugin '907th/vim-auto-save'
+" Plug '907th/vim-auto-save'
 
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Brief help
-" :PluginList          - list configured plugins
-" :PluginInstall(!)    - install (update) plugins
-" :PluginSearch(!) foo - search (or refresh cache first) for foo
-" :PluginClean(!)      - confirm (or auto-approve) removal of unused plugins
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
+" Add plugins to &runtimepath
+call plug#end()
+
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " General Options
@@ -84,7 +66,7 @@ if has('gui_running')
     set guioptions-=r  "remove right-hand scroll bar
 
     if has("x11")
-        set guifont=Dejavu\ Sans\ Mono\ for\ Powerline\ 10
+        set guifont=Droid\ Sans\ Mono\ for\ Powerline\ 10
         "set guifont=Inconsolata-g\ for\ Powerline\ 10
         "set guifont=Hack-Regular\ 10
         let g:airline_powerline_fonts = 1
