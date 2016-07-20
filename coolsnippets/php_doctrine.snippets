@@ -48,7 +48,18 @@ snippet inhjoined  "Class Table Inheritance"
  */
 endsnippet
 
+snippet unique "Unique entity"
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-snippet ddd "Doctrine data dump"
-die(\Doctrine\Common\Util\Debug::dump($${1:entity}));
+ * @UniqueEntity("${1:campo}" )
+endsnippet
+
+snippet uniquemultiple  "Unique entity multiple fields"
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
+ * @UniqueEntity(
+ *     fields={"${1:campo_uno}", "${2:campo_dos}"},
+ *     errorPath="$1",
+ *     message="$1 y $2 ya existen y no pueden ser duplicados"
+ * )
 endsnippet
