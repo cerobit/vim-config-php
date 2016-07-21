@@ -11,6 +11,7 @@ Plug 'chrisgillis/vim-bootstrap3-snippets'
 Plug 'Shougo/neocomplete.vim'
 Plug 'shawncplus/phpcomplete.vim'
 Plug 'arnaud-lb/vim-php-namespace'
+Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 "Plug 'ludovicchabant/vim-gutentags'
 
 " Syntax
@@ -274,7 +275,7 @@ function! g:UltiSnips_Complete()
             call UltiSnips#JumpForwards()
             if g:ulti_jump_forwards_res == 0
                 return  <SID>check_back_space() ? "\<TAB>"
-                            \: neocomplete#start_manual_complete()
+                            \: neocomplete#start_manual_complete('omni')
             endif
         endif
     endif
@@ -337,30 +338,28 @@ let g:phpcomplete_parse_docblock_comments = 1
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Neocomplete
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Disable AutoComplPop.
+
+"neocomplete.vim
 let g:acp_enableAtStartup = 0
-" Use neocomplete.
-let g:neocomplete#enable_at_startup = 1
-" AutoComplPop like behavior.
-let g:neocomplete#enable_auto_select = 1
-" Set max syntax keyword length.
-let g:neocomplete#sources#buffer#max_keyword_width = 40
-" Max list
-let g:neocomplete#max_list = 20
+let g:neocomplete#enable_at_startup                = 1
+let g:neocomplete#auto_completion_start_length     = 2
+let g:neocomplete#enable_auto_close_preview        = 1
+let g:neocomplete#enable_auto_select               = 1
 
-" Use smartcase.
-let g:neocomplete#enable_smart_case                 = 1
-" Set minimum syntax keyword length.
-let g:neocomplete#sources#syntax#min_keyword_length = 3
-let g:neocomplete#lock_buffer_name_pattern          = '\*ku\*'
-let g:neocomplete#enable_auto_delimiter             = 1
-let g:neocomplete#enable_refresh_always             = 1
+" Smart case and fuzziness
+let g:neocomplete#enable_smart_case                = 1
+let g:neocomplete#enable_camel_case                = 1
+let g:neocomplete#enable_fuzzy_completion          = 0
 
+let g:neocomplete#max_keyword_width                = 40
+let g:neocomplete#max_list                         = 10
+let g:neocomplete#use_vimproc                      = 0
+let g:neocomplete#sources#buffer#cache_limit_size  = 50000
+let g:neocomplete#sources#buffer#max_keyword_width = 30
+let g:neocomplete#sources = {}
+let g:neocomplete#sources._ = ['buffer', 'tag']
 
-" Define dictionary.
-let g:neocomplete#sources#dictionary#dictionaries = {
-    \ 'default' : '',
-    \ }
+let g:neocomplete#fallback_mappings = ["\<C-x>\<C-o>", "\<C-x>\<C-n>"]
 
 " Define keyword.
 if !exists('g:neocomplete#keyword_patterns')
@@ -368,17 +367,12 @@ if !exists('g:neocomplete#keyword_patterns')
 endif
 let g:neocomplete#keyword_patterns['default'] = '\h\w*'
 
+" Enable heavy omni completion.
 if !exists('g:neocomplete#sources#omni#input_patterns')
   let g:neocomplete#sources#omni#input_patterns = {}
 endif
+"let g:neocomplete#sources#omni#input_patterns.php =  '[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
 let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
-"let g:neocomplete#sources#omni#input_patterns.php =
-"      \'\h\w*\|[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
-
-"if !exists('g:neocomplete#force_omni_input_patterns')
-"    let g:neocomplete#force_omni_input_patterns = {}
-"endif
-"let g:neocomplete#force_omni_input_patterns.php = '[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
 
 " <TAB>: completion.
 " Shortcut for toggle neocomplete
@@ -400,7 +394,6 @@ endfunction
 " <C-h>, <BS>: close popup and delete backword char.
 inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
 inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Vim-Php-Namespace

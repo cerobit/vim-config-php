@@ -12,7 +12,7 @@ echo Root :$git_root
 exec ctags -f ~/.vim/ctags/tags \
     -h ".php" -R \
     --languages=PHP \
-    --PHP-kinds=cfiv\
+    --PHP-kinds=cif\
     --totals=yes \
     --tag-relative=yes \
     --regex-PHP='/abstract\s+class\s+([^ ]+)/\1/c/' \
@@ -22,17 +22,25 @@ exec ctags -f ~/.vim/ctags/tags \
     --exclude=".svn" \
     --exclude=".git" \
     --exclude=".git/*" \
+    --exclude="bin/*" \
     --exclude="app/*" \
     --exclude="bin/*" \
+    --exclude="var/*" \
     --exclude="web/*" \
     --exclude="tests/*" \
     --exclude="*/Test/*" \
     --exclude="*/Tests/*" \
     --exclude="*test*" \
     --exclude="*Form/Type*" \
-    $git_root'/src' \
-    $git_root'/vendor/sensio' \
-    $git_root'/vendor/symfony' \
+    --exclude=vendor/*/vendor \
+    --fields=+aimS \
+    --extra=+f \
+    --langdef=file \
+    --langmap=file:.html.twig.xml.yml \
+    $git_root'/src/AppBundle/Controller' \
+    $git_root'/src/AppBundle/Entity' \
+    $git_root'/vendor/symfony/symfony/src/Symfony' \
+    #$git_root'/vendor/sensio' \
     #$git_root'/vendor/doctrine' \
-    $git_root'/vendor/twig' \
-    $git_root'/vendor/friendsofsymfony' \
+    #$git_root'/vendor/twig' \
+    #$git_root'/vendor/friendsofsymfony' \
