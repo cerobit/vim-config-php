@@ -348,18 +348,16 @@ let g:neocomplete#enable_auto_select               = 1
 
 " Smart case and fuzziness
 let g:neocomplete#enable_smart_case                = 1
-let g:neocomplete#enable_camel_case                = 1
+let g:neocomplete#enable_camel_case                = 0
 let g:neocomplete#enable_fuzzy_completion          = 0
 
 let g:neocomplete#max_keyword_width                = 40
-let g:neocomplete#max_list                         = 10
-let g:neocomplete#use_vimproc                      = 0
+let g:neocomplete#max_list                         = 20
+let g:neocomplete#use_vimproc                      = 1
 let g:neocomplete#sources#buffer#cache_limit_size  = 50000
 let g:neocomplete#sources#buffer#max_keyword_width = 30
 let g:neocomplete#sources = {}
 let g:neocomplete#sources._ = ['buffer', 'tag']
-
-let g:neocomplete#fallback_mappings = ["\<C-x>\<C-o>", "\<C-x>\<C-n>"]
 
 " Define keyword.
 if !exists('g:neocomplete#keyword_patterns')
@@ -371,8 +369,8 @@ let g:neocomplete#keyword_patterns['default'] = '\h\w*'
 if !exists('g:neocomplete#sources#omni#input_patterns')
   let g:neocomplete#sources#omni#input_patterns = {}
 endif
-"let g:neocomplete#sources#omni#input_patterns.php =  '[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
-let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+let g:neocomplete#sources#omni#input_patterns.php =  '[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
+"let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
 
 " <TAB>: completion.
 " Shortcut for toggle neocomplete
