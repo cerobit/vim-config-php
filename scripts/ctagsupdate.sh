@@ -10,9 +10,9 @@ done
 echo Root :$git_root
 
 exec ctags -f ~/.vim/ctags/tags \
-    -h ".php" -R \
-    --languages=PHP \
-    --PHP-kinds=cif\
+    --recurse \
+    --languages=php \
+    --PHP-kinds=+cfidv\
     --totals=yes \
     --tag-relative=yes \
     --regex-PHP='/abstract\s+class\s+([^ ]+)/\1/c/' \
@@ -33,13 +33,12 @@ exec ctags -f ~/.vim/ctags/tags \
     --exclude="*test*" \
     --exclude="*Form/Type*" \
     --exclude=vendor/*/vendor \
-    --fields=+aimS \
     --extra=+f \
     --langdef=file \
     --langmap=file:.html.twig.xml.yml \
     $git_root'/src/AppBundle/Controller' \
     $git_root'/src/AppBundle/Entity' \
-    $git_root'/vendor/symfony/symfony/src/Symfony' \
+    $git_root'/vendor/symfony/symfony/src/Symfony/Component/HttpFoundation' \
     #$git_root'/vendor/sensio' \
     #$git_root'/vendor/doctrine' \
     #$git_root'/vendor/twig' \

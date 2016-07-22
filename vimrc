@@ -11,7 +11,7 @@ Plug 'chrisgillis/vim-bootstrap3-snippets'
 Plug 'Shougo/neocomplete.vim'
 Plug 'shawncplus/phpcomplete.vim'
 Plug 'arnaud-lb/vim-php-namespace'
-Plug 'Shougo/vimproc.vim', {'do' : 'make'}
+"Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 "Plug 'ludovicchabant/vim-gutentags'
 
 " Syntax
@@ -256,7 +256,7 @@ let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_by_filename = 1     " Search filename by default instead full path
 
 "Symfony specific dirs ignored
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*vendor*,*web*,*app/cache*,*app/logs*
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*vendor*,*web*,*app/cache*,*app/logs*,*var
 let g:ctrlp_root_markers = ['src/', '.git/','.hg/','_darcs','.bzr']
 
 "let g:ctrlp_extensions = ['tag']
@@ -275,7 +275,7 @@ function! g:UltiSnips_Complete()
             call UltiSnips#JumpForwards()
             if g:ulti_jump_forwards_res == 0
                 return  <SID>check_back_space() ? "\<TAB>"
-                            \: neocomplete#start_manual_complete('omni')
+                            \: neocomplete#start_manual_complete('tag')
             endif
         endif
     endif
@@ -298,7 +298,7 @@ let g:UltiSnipsSnippetDirectories=["UltiSnips", "coolsnippets"]
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Tags and Omnicomplete configs
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set tags=~/.vim/ctags/tags
+set tags+=~/.vim/ctags/tags
 
 if has('autocmd')
   augroup OmniCompleteModes
@@ -314,7 +314,7 @@ endif
 
 
 "set complete=.,w,b,t,i,k
-set complete=.,t,i
+set complete=.,t
 set completeopt=longest,menuone "like an editor
 
  "If not specific completion scripts exits use vim general code
@@ -325,14 +325,14 @@ set completeopt=longest,menuone "like an editor
                  \endif
  endif
 
- autocmd InsertLeave * if pumvisible() == 0|pclose|endif
+" autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " PhpComplete
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:phpcomplete_complete_for_unknown_classes = 1
-let g:phpcomplete_search_tags_for_variables = 1
+let g:phpcomplete_search_tags_for_variables = 0
 let g:phpcomplete_parse_docblock_comments = 1
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -340,24 +340,35 @@ let g:phpcomplete_parse_docblock_comments = 1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 "neocomplete.vim
+"let g:neocomplete#enable_auto_close_preview        = 1
+"let g:neocomplete#enable_fuzzy_completion          = 0
+" Disable AutoComplPop.
 let g:acp_enableAtStartup = 0
-let g:neocomplete#enable_at_startup                = 1
-let g:neocomplete#auto_completion_start_length     = 2
-let g:neocomplete#enable_auto_close_preview        = 1
-let g:neocomplete#enable_auto_select               = 1
+" Use neocomplete.
+let g:neocomplete#enable_at_startup = 1
 
-" Smart case and fuzziness
-let g:neocomplete#enable_smart_case                = 1
-let g:neocomplete#enable_camel_case                = 0
-let g:neocomplete#enable_fuzzy_completion          = 0
+""" Disable Auto
+"let g:neocomplete_disable_auto_complete = 1
 
-let g:neocomplete#max_keyword_width                = 40
-let g:neocomplete#max_list                         = 20
-let g:neocomplete#use_vimproc                      = 1
-let g:neocomplete#sources#buffer#cache_limit_size  = 50000
-let g:neocomplete#sources#buffer#max_keyword_width = 30
-let g:neocomplete#sources = {}
-let g:neocomplete#sources._ = ['buffer', 'tag']
+" AutoComplPop like behavior.
+let g:neocomplete#enable_auto_select = 1
+" Set max syntax keyword length.
+let g:neocomplete#sources#buffer#max_keyword_width = 40
+" Max list
+let g:neocomplete#max_list = 20
+" Use smartcase.
+let g:neocomplete#enable_smart_case                 = 1
+" Set minimum syntax keyword length.
+let g:neocomplcache_min_syntax_length = 3
+" Set minimum syntax keyword length.
+let g:neocomplete#lock_buffer_name_pattern          = '\*ku\*'
+let g:neocomplete#enable_refresh_always             = 0
+
+
+" Define dictionary.
+let g:neocomplete#sources#dictionary#dictionaries = {
+    \ 'default' : '',
+        \ }
 
 " Define keyword.
 if !exists('g:neocomplete#keyword_patterns')
@@ -365,12 +376,14 @@ if !exists('g:neocomplete#keyword_patterns')
 endif
 let g:neocomplete#keyword_patterns['default'] = '\h\w*'
 
-" Enable heavy omni completion.
 if !exists('g:neocomplete#sources#omni#input_patterns')
   let g:neocomplete#sources#omni#input_patterns = {}
 endif
-let g:neocomplete#sources#omni#input_patterns.php =  '[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
-"let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+"let g:neocomplete#sources#omni#input_patterns.php = '\h\w*\|[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
+
+let g:neocomplete#sources = {}
+let g:neocomplete#sources.php = ['tag','buffer']
 
 " <TAB>: completion.
 " Shortcut for toggle neocomplete
