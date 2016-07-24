@@ -21,6 +21,8 @@ exec ctags -f ~/.vim/ctags/tags \
     --exclude="*.js" \
     --exclude=".svn" \
     --exclude=".git" \
+    --exclude=".phpcd" \
+    --exclude=".phpcd/*" \
     --exclude=".git/*" \
     --exclude="bin/*" \
     --exclude="app/*" \

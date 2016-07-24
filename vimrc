@@ -7,12 +7,11 @@ call plug#begin('~/.vim/plugged')
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'chrisgillis/vim-bootstrap3-snippets'
-"Plug 'ervandew/supertab'
 Plug 'Shougo/neocomplete.vim'
-Plug 'shawncplus/phpcomplete.vim'
+"Plug 'shawncplus/phpcomplete.vim'
 Plug 'arnaud-lb/vim-php-namespace'
+Plug 'phpvim/phpcd.vim', { 'for': 'php' , 'do': 'composer update' }
 "Plug 'Shougo/vimproc.vim', {'do' : 'make'}
-"Plug 'ludovicchabant/vim-gutentags'
 
 " Syntax
 Plug 'scrooloose/syntastic'
@@ -22,6 +21,7 @@ Plug '2072/PHP-Indenting-for-VIm'
 Plug 'Yggdroot/indentLine'
 Plug 'JulesWang/css.vim'
 Plug 'hail2u/vim-css3-syntax'
+Plug 'tpope/vim-commentary'
 
 " Git
 Plug 'tpope/vim-fugitive'
@@ -45,7 +45,6 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'morhetz/gruvbox'
 Plug 'w0ng/vim-hybrid'
 Plug 'atelierbram/vim-colors_duotones'
-"Plug 'google/vim-colorscheme-primary'
 
 " Magic 
 " Plug '907th/vim-auto-save'
@@ -80,6 +79,7 @@ if has('gui_running')
 
     autocmd GUIEnter * set vb t_vb=
 
+
 elseif $TERM == "xterm-256color"
     set t_Co=256
 endif
@@ -92,7 +92,6 @@ set ruler                                   " Always show current position
 set number                                  " Always show line-numbers
 set numberwidth=5                           " Line-number margin width
 set mousehide                               " Do not show mouse while typing
-set antialias                               " Pretty fonts
 set linespace=0                             " Don't insert any extra pixel lines
 set lazyredraw                              " Don't redraw while running macros
 set wildmenu                                " Wild menu
@@ -101,6 +100,8 @@ set cpoptions+=$
 set pastetoggle=<F3>                        " Easy paste from SO
 syntax enable                               " Switch syntax highlighting
                                             " also switch on highlighting the last used search pattern.
+
+set ttyfast                                 " Bigger block size for faster scrolling
 
 set hlsearch                                " Highlight search results
 
@@ -112,7 +113,10 @@ set ignorecase                               " Ignore case when searching
 set smartcase                                " When searching try to be smart about cases
 set background=dark                          " We are dark people...
 
+" Gundo python setting
 let g:gundo_prefer_python3 = 1
+
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "  Colors
@@ -203,6 +207,9 @@ nnoremap <C-d> <C-d>zz
 " Semicolon at end
 inoremap <S-CR> <End>;
 
+" Easier copy/paste
+map <leader>v "*p
+map <leader>c "+y
 
 "Save on exit wont work if gvim loose focus
 "autocmd InsertLeave * write
@@ -256,7 +263,7 @@ let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_by_filename = 1     " Search filename by default instead full path
 
 "Symfony specific dirs ignored
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*vendor*,*web*,*app/cache*,*app/logs*,*var
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*vendor*,*web*,*app/cache*,*app/logs*,*var,*.phpcd*
 let g:ctrlp_root_markers = ['src/', '.git/','.hg/','_darcs','.bzr']
 
 "let g:ctrlp_extensions = ['tag']
@@ -275,7 +282,7 @@ function! g:UltiSnips_Complete()
             call UltiSnips#JumpForwards()
             if g:ulti_jump_forwards_res == 0
                 return  <SID>check_back_space() ? "\<TAB>"
-                            \: neocomplete#start_manual_complete('tag')
+                            \: neocomplete#start_manual_complete('omni')
             endif
         endif
     endif
@@ -303,7 +310,7 @@ set tags+=~/.vim/ctags/tags
 if has('autocmd')
   augroup OmniCompleteModes
     autocmd!
-    autocmd FileType php           nested setlocal omnifunc=phpcomplete#CompletePHP
+    autocmd FileType php           nested setlocal omnifunc=phpcd#CompletePHP
     autocmd FileType python        nested setlocal omnifunc=pythoncomplete#Complete
     autocmd FileType css           nested setlocal omnifunc=csscomplete#CompleteCSS
     autocmd FileType html,markdown nested setlocal omnifunc=htmlcomplete#CompleteTags
@@ -325,14 +332,14 @@ set completeopt=longest,menuone "like an editor
                  \endif
  endif
 
-" autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 
+" autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " PhpComplete
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:phpcomplete_complete_for_unknown_classes = 1
-let g:phpcomplete_search_tags_for_variables = 0
+let g:phpcomplete_search_tags_for_variables = 1
 let g:phpcomplete_parse_docblock_comments = 1
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -340,7 +347,6 @@ let g:phpcomplete_parse_docblock_comments = 1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 "neocomplete.vim
-"let g:neocomplete#enable_auto_close_preview        = 1
 "let g:neocomplete#enable_fuzzy_completion          = 0
 " Disable AutoComplPop.
 let g:acp_enableAtStartup = 0
@@ -350,6 +356,8 @@ let g:neocomplete#enable_at_startup = 1
 """ Disable Auto
 "let g:neocomplete_disable_auto_complete = 1
 
+" AutoComplPop like behavior.
+let g:neocomplete#enable_auto_close_preview        = 1
 " AutoComplPop like behavior.
 let g:neocomplete#enable_auto_select = 1
 " Set max syntax keyword length.
@@ -365,6 +373,12 @@ let g:neocomplete#lock_buffer_name_pattern          = '\*ku\*'
 let g:neocomplete#enable_refresh_always             = 0
 
 
+"""""""""""""""""""""""""""""""""""""
+"  Use Omni -> And Omni uses PhpCD  "
+"""""""""""""""""""""""""""""""""""""
+let g:neocomplete#sources = {}
+let g:neocomplete#sources.php = ['buffer','omni', 'tag']
+
 " Define dictionary.
 let g:neocomplete#sources#dictionary#dictionaries = {
     \ 'default' : '',
@@ -379,11 +393,8 @@ let g:neocomplete#keyword_patterns['default'] = '\h\w*'
 if !exists('g:neocomplete#sources#omni#input_patterns')
   let g:neocomplete#sources#omni#input_patterns = {}
 endif
-let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
-"let g:neocomplete#sources#omni#input_patterns.php = '\h\w*\|[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
-
-let g:neocomplete#sources = {}
-let g:neocomplete#sources.php = ['tag','buffer']
+let g:neocomplete#sources#omni#input_patterns.php = '\h\w*\|[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
+"let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
 
 " <TAB>: completion.
 " Shortcut for toggle neocomplete
@@ -483,6 +494,7 @@ let g:gitgutter_signs = 0                                                       
 set laststatus=2      " show status line all the time
 set scrolloff=10      " don't scroll any closer to top/bottom
 set sidescrolloff=5   " don't scroll any closer to left/right
+set scrolljump=5      " Scroll 5 lines if cursor get closer to top or down 
 
 " NOTE: The statusline settings below is ignored if Airline is loaded.
 set statusline=%t                                                                   " tail of the filename
