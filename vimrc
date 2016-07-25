@@ -347,37 +347,23 @@ let g:phpcomplete_parse_docblock_comments = 1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 "neocomplete.vim
-"let g:neocomplete#enable_fuzzy_completion          = 0
-" Disable AutoComplPop.
-let g:acp_enableAtStartup = 0
-" Use neocomplete.
-let g:neocomplete#enable_at_startup = 1
-
-""" Disable Auto
-"let g:neocomplete_disable_auto_complete = 1
-
-" AutoComplPop like behavior.
-let g:neocomplete#enable_auto_close_preview        = 1
-" AutoComplPop like behavior.
-let g:neocomplete#enable_auto_select = 1
-" Set max syntax keyword length.
-let g:neocomplete#sources#buffer#max_keyword_width = 40
-" Max list
-let g:neocomplete#max_list = 20
-" Use smartcase.
-let g:neocomplete#enable_smart_case                 = 1
-" Set minimum syntax keyword length.
-let g:neocomplcache_min_syntax_length = 3
-" Set minimum syntax keyword length.
+let g:acp_enableAtStartup                           = 0  " Disable AutoComplPop.
+let g:neocomplete#enable_at_startup                 = 1  " Use neocomplete
+"let g:neocomplete_disable_auto_complete            = 1  " Disable Auto only manual 
+let g:neocomplete#enable_auto_close_preview         = 1  " Auto Close
+let g:neocomplete#enable_auto_select                = 1  " AutoComplPop like behavior.
+let g:neocomplete#sources#buffer#max_keyword_width  = 60 " Set max syntax keyword length
+let g:neocomplete#max_list                          = 60 " Max list
+let g:neocomplete#enable_smart_case                 = 0  " Use smartcase
+let g:neocomplete#enable_fuzzy_completion           = 1  " Fuzzy
 let g:neocomplete#lock_buffer_name_pattern          = '\*ku\*'
 let g:neocomplete#enable_refresh_always             = 0
-
 
 """""""""""""""""""""""""""""""""""""
 "  Use Omni -> And Omni uses PhpCD  "
 """""""""""""""""""""""""""""""""""""
 let g:neocomplete#sources = {}
-let g:neocomplete#sources.php = ['buffer','omni', 'tag']
+let g:neocomplete#sources.php = ['buffer','omni', 'ultisnips']
 
 " Define dictionary.
 let g:neocomplete#sources#dictionary#dictionaries = {
