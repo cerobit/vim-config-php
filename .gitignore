@@ -4,4 +4,4 @@
 !.gitignore
 !/coolsnippets/*
 !/scripts/*
-!/ctags
+!/guttentags/*

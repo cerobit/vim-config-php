@@ -9,9 +9,10 @@ Plug 'honza/vim-snippets'
 Plug 'chrisgillis/vim-bootstrap3-snippets'
 Plug 'Shougo/neocomplete.vim'
 "Plug 'shawncplus/phpcomplete.vim'
+"Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 Plug 'arnaud-lb/vim-php-namespace'
 Plug 'phpvim/phpcd.vim', { 'for': 'php' , 'do': 'composer update' }
-"Plug 'Shougo/vimproc.vim', {'do' : 'make'}
+Plug 'ludovicchabant/vim-gutentags'
 
 " Syntax
 Plug 'scrooloose/syntastic'
@@ -305,7 +306,9 @@ let g:UltiSnipsSnippetDirectories=["UltiSnips", "coolsnippets"]
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Tags and Omnicomplete configs
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set tags+=~/.vim/ctags/tags
+let g:gutentags_exclude = ['*.css', '*.html', '*.js','.phpcd/*' ]
+let g:gutentags_cache_dir = '~/.vim/gutentags'
+
 
 if has('autocmd')
   augroup OmniCompleteModes
