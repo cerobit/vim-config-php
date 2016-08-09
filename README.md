@@ -3,14 +3,15 @@ My Simple custom vim config file
 ==================================================
 This custom vim config is the result of my personal learning of vim this are inspired on many many github configs files, videos and blogs
 
- **Im using vim for PHP mainly with Symfony 2-3  on Arch Linux**
- **ctrlp, nerdtree, vim-fugitive, vim-surround, airline**
- **Great Php Autocompletion: phpcd,neocomplete,guttentags**
- **phpcd its the best php completion plugin form vim (IMHO). it does not requiere tags its simple, fast and deserve more attention**
-     **https://github.com/phpvim/phpcd.vim**
- **Many many tweaks!!**
+*  **Im using vim for PHP mainly with Symfony 2-3  on Arch Linux.**
+*  **ctrlp, nerdtree, vim-fugitive, vim-surround, airline.**
+*  **Great Php Autocompletion: phpcd,neocomplete,guttentags.**
+*  **phpcd its the best php completion plugin form vim (IMHO). it does not requiere tags its simple, fast and deserve more attention https://github.com/phpvim/phpcd.vim**
+*  **Many many tweaks!!**
 
+------------------------------
 To install
+
 1. Clone into .vim
 2. Install VimPlug  ( https://github.com/junegunn/vim-plug )
 3. Open Vim and run the commmand: PlugInstall
