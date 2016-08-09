@@ -18,8 +18,10 @@ To install
 4. Install a good Font im using: Droid Sans Mono for Powerline https://github.com/Lokaltog/powerline-fonts ( i place it on   ~/.fonts/  or where your Operating system requiere)
 5. For autocompletion install patched ctags see  ( https://github.com/shawncplus/phpcomplete.vim/wiki/Patched-ctags )
 
- Some Maps, and Teaks of my config 
+
 ------------------------------
+Some Maps, and Teaks of my config 
+
 * F6,F7  Quick change betwen open buffers
 * F8 "Close a buffer" 
 * Remap ñ to <leader> for quick commands for my spanish keyboard 
