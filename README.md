@@ -19,8 +19,8 @@ To install
 5. For autocompletion install patched ctags see  ( https://github.com/shawncplus/phpcomplete.vim/wiki/Patched-ctags )
 
 
-------------------------------
 Some Maps, and Teaks of my config 
+------------------------------
 
 * F6,F7  Quick change betwen open buffers
 * F8 "Close a buffer" 
