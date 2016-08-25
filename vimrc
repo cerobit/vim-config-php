@@ -4,19 +4,23 @@ filetype off                  " required
 " VimPlug
 call plug#begin('~/.vim/plugged')
 " Snippets - Autocomplete
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
-Plug 'chrisgillis/vim-bootstrap3-snippets'
 Plug 'Shougo/neocomplete.vim'
-"Plug 'shawncplus/phpcomplete.vim'
-"Plug 'Shougo/vimproc.vim', {'do' : 'make'}
+Plug 'SirVer/ultisnips'
+Plug 'sniphpets/sniphpets'
+Plug 'sniphpets/sniphpets-common'
+Plug 'sniphpets/sniphpets-symfony'
+Plug 'sniphpets/sniphpets-doctrine'
+"Plug 'honza/vim-snippets'
+
+Plug 'bonsaiben/bootstrap-snippets'
+
 Plug 'arnaud-lb/vim-php-namespace'
 Plug 'phpvim/phpcd.vim', { 'for': 'php' , 'do': 'composer update' }
 Plug 'ludovicchabant/vim-gutentags'
 
 " Syntax
 Plug 'scrooloose/syntastic'
-Plug 'evidens/vim-twig'
+Plug 'nelsyeung/twig.vim'  " Enables complettion also
 Plug 'elzr/vim-json'
 Plug '2072/PHP-Indenting-for-VIm'
 Plug 'Yggdroot/indentLine'
@@ -283,7 +287,7 @@ function! g:UltiSnips_Complete()
             call UltiSnips#JumpForwards()
             if g:ulti_jump_forwards_res == 0
                 return  <SID>check_back_space() ? "\<TAB>"
-                            \: neocomplete#start_manual_complete('omni')
+                            \: neocomplete#start_manual_complete()
             endif
         endif
     endif
@@ -300,6 +304,7 @@ inoremap <TAB> <C-R>=g:UltiSnips_Complete()<cr>
 let g:UltiSnipsExpandTrigger="<NOP>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+
 " Folders with Snippets
 let g:UltiSnipsSnippetDirectories=["UltiSnips", "coolsnippets"]
 
