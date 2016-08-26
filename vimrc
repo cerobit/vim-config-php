@@ -301,7 +301,7 @@ endfunction "}}}
 
 inoremap <TAB> <C-R>=g:UltiSnips_Complete()<cr>
 
-let g:UltiSnipsExpandTrigger="<NOP>"
+let g:UltiSnipsExpandTrigger="<nop>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 
@@ -398,14 +398,23 @@ noremap <leader>n :NeoCompleteToggle<CR>
 inoremap <expr><C-g>     neocomplete#undo_completion()
 inoremap <expr><C-l>     neocomplete#complete_common_string()
 
-" Recommended key-mappings.
-" <CR>: close popup and save indent.
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-function! s:my_cr_function()
-  " return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
-  " For no inserting <CR> key.
-  return pumvisible() ? "\<C-y>" : "\<CR>"
+let g:ulti_expand_or_jump_res = 0
+function ExpandSnippetOrCarriageReturn()
+    let snippet = UltiSnips#ExpandSnippetOrJump()
+    if g:ulti_expand_or_jump_res > 0
+        return snippet
+    else
+        return "\<CR>"
+    endif
 endfunction
+inoremap <expr> <CR> pumvisible() ? "<C-R>=ExpandSnippetOrCarriageReturn()<CR>" : "\<CR>"
+
+
+""" <CR>: close popup and save indent.
+""inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+""function! s:my_cr_function()
+""  return pumvisible() ? neocomplete#close_popup() : "\<CR>" 
+""endfunction
 
 " <C-h>, <BS>: close popup and delete backword char.
 inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
