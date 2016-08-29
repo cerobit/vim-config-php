@@ -34,7 +34,10 @@ Plug 'airblade/vim-gitgutter'
 
 " Files - Utilities
 Plug 'scrooloose/nerdtree'
-Plug 'ctrlpvim/ctrlp.vim'
+Plug 'airblade/vim-rooter'
+Plug 'Shougo/unite.vim'
+Plug 'Shougo/neomru.vim'
+
 Plug 'majutsushi/tagbar'
 Plug 'tpope/vim-surround'
 Plug 'mattn/emmet-vim'
@@ -187,7 +190,7 @@ endif
 
 let mapleader="ñ"
 
-nnoremap <leader>s :update<CR>
+nnoremap <leader><leader> :update<CR>
 nnoremap <F5> :GundoToggle<CR>
 noremap  <F6>  :bprev <CR>
 noremap  <F7>  :bnext <CR>
@@ -256,64 +259,83 @@ let g:airline#extensions#tabline#fnamemod = ':t'
 let g:indentLine_color_dark = 1 " (default: 2)
 "let g:indentLine_char = '┊'
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Rooter
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+let g:rooter_patterns = ['src/', '.git/','.hg/','_darcs','.bzr']
+let g:rooter_silent_chdir = 1
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"CtrlP
+" Unite
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nnoremap <leader><leader> :CtrlPMRUFiles<CR>
 
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlP'
-let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_by_filename = 1     " Search filename by default instead full path
+nnoremap <silent><leader>s :Unite -toggle -auto-resize -buffer-name=file file_mru buffer<cr>
+nnoremap <silent><leader>f :Unite -toggle -auto-resize -buffer-name=file file_rec<cr>
 
-"Symfony specific dirs ignored
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*vendor*,*web*,*app/cache*,*app/logs*,*var,*.phpcd*
-let g:ctrlp_root_markers = ['src/', '.git/','.hg/','_darcs','.bzr']
+call unite#custom#profile('default', 'context', {
+\   'direction': 'botright',
+\   'start_insert': 1,
+\   'vertical_preview': 1,
+\   'prompt': '» ',
+\   'candidate-icon': '-',
+\   'marked-icon': '+',
+\   'winheight': 20
+\ })
 
-"let g:ctrlp_extensions = ['tag']
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Ultisnips - Integration Neocomplete
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Custon TAB function to activate completion on 
-" Ultisnips + Neocomplete
 
-function! g:UltiSnips_Complete()
-    call UltiSnips#ExpandSnippet()
-    if g:ulti_expand_res == 0
-        if pumvisible()
-            return "\<C-n>"
-        else
-            call UltiSnips#JumpForwards()
-            if g:ulti_jump_forwards_res == 0
-                return  <SID>check_back_space() ? "\<TAB>"
-                            \: neocomplete#start_manual_complete()
-            endif
-        endif
-    endif
-    return ""
+let g:unite_data_directory='~/.vim/unite'
+
+"let g:unite_source_file_mru_limit = 200
+"Fuzzy search
+call unite#filters#matcher_default#use(['matcher_fuzzy'])
+
+function! s:unite_settings()
+    nmap <buffer> Q <plug>(unite_exit)
+    nmap <buffer> <esc> <plug>(unite_exit)
+    imap <buffer> <esc> <plug>(unite_exit)
 endfunction
+autocmd FileType unite call s:unite_settings()
 
-function! s:check_back_space() "{{{
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~ '\s'
-endfunction "}}}
+let s:unite_ignores = [
+  \ '\.git', 'deploy', 'dist','\.phpcd',
+  \ 'undo', 'tmp', 'backups','vendor',
+  \ 'generated', 'build', 'images']
 
-inoremap <TAB> <C-R>=g:UltiSnips_Complete()<cr>
+set wildignore+=*/tmp/*,*.so,*~,*.zip,
+            \*/.git/*,*/.svn/*,*/.phpcd/*,
+            \*/vendor/*,node_modules,
+            \*/var/*,
+            \*/.DS_Store,coverage,
+            \*/*bundle.js,*.map
 
-let g:UltiSnipsExpandTrigger="<nop>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+call unite#custom#source(
+  \  'file_rec,file_mru,file,buffer,grep',
+  \  'ignore_globs',
+  \  split(&wildignore, ",")
+  \ )
 
-" Folders with Snippets
-let g:UltiSnipsSnippetDirectories=["UltiSnips", "coolsnippets"]
+if executable('ag')
+    " Use ag (the silver searcher)
+    " https://github.com/ggreer/the_silver_searcher
+    let g:unite_source_grep_command = 'ag'
+    let g:unite_source_grep_default_opts =
+                \ '-i --vimgrep --hidden --ignore ' .
+                \ '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
+    let g:unite_source_grep_recursive_opt = ''
+endif
+
+
+" search a file in the filetree
+"nnoremap :split<cr> :<C-u>Unite -start-insert file_rec/async<cr>
+" reset not it is <C-l> normally
+nnoremap <leader>r <Plug>(unite_restart)"
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Tags and Omnicomplete configs
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:gutentags_exclude = ['*.css', '*.html', '*.js','.phpcd/*' ]
 let g:gutentags_cache_dir = '~/.vim/gutentags'
-
 
 if has('autocmd')
   augroup OmniCompleteModes
@@ -326,7 +348,6 @@ if has('autocmd')
     autocmd FileType xml           nested setlocal omnifunc=xmlcomplete#CompleteTags
   augroup END
 endif
-
 
 "set complete=.,w,b,t,i,k
 set complete=.,t
@@ -367,11 +388,10 @@ let g:neocomplete#enable_fuzzy_completion           = 1  " Fuzzy
 let g:neocomplete#lock_buffer_name_pattern          = '\*ku\*'
 let g:neocomplete#enable_refresh_always             = 0
 
-"""""""""""""""""""""""""""""""""""""
-"  Use Omni -> And Omni uses PhpCD  "
-"""""""""""""""""""""""""""""""""""""
+" Sources
 let g:neocomplete#sources = {}
-let g:neocomplete#sources.php = ['buffer','omni', 'ultisnips']
+"  Use Omni -> And Omni uses PhpCD
+let g:neocomplete#sources.php = [ 'ultisnips', 'omni','buffer']
 
 " Define dictionary.
 let g:neocomplete#sources#dictionary#dictionaries = {
@@ -388,16 +408,55 @@ if !exists('g:neocomplete#sources#omni#input_patterns')
   let g:neocomplete#sources#omni#input_patterns = {}
 endif
 let g:neocomplete#sources#omni#input_patterns.php = '\h\w*\|[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
-"let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
 
-" <TAB>: completion.
-" Shortcut for toggle neocomplete
-noremap <leader>n :NeoCompleteToggle<CR>
 
 " Plugin key-mappings.
 inoremap <expr><C-g>     neocomplete#undo_completion()
 inoremap <expr><C-l>     neocomplete#complete_common_string()
+" Toggle Neocomplete
+noremap <leader>n :NeoCompleteToggle<CR>
+" <C-h>, <BS>: close popup and delete backword char.
+inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
 
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Ultisnips - Integration Neocomplete
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Custon TAB function to activate completion on Ultisnips + Neocomplete
+
+" Folders with Snippets
+let g:UltiSnipsSnippetDirectories=["UltiSnips", "coolsnippets"]
+
+function! g:UltiSnips_Complete()
+    call UltiSnips#ExpandSnippet()
+    if g:ulti_expand_res == 0
+        if pumvisible()
+            return "\<C-n>"
+        else
+            call UltiSnips#JumpForwards()
+            if g:ulti_jump_forwards_res == 0
+                return  <SID>check_back_space() ? "\<TAB>"
+                            \: neocomplete#start_manual_complete()
+            endif
+        endif
+    endif
+    return ""
+endfunction
+
+function! s:check_back_space() "{{{
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~ '\s'
+endfunction "}}}
+
+" TAB  Ultisnips + Neocomplete Integration
+inoremap <TAB> <C-R>=g:UltiSnips_Complete()<cr>
+
+let g:UltiSnipsExpandTrigger="<nop>" "Important for Neocomplete Integration
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+
+" Smart CR 
 let g:ulti_expand_or_jump_res = 0
 function ExpandSnippetOrCarriageReturn()
     let snippet = UltiSnips#ExpandSnippetOrJump()
@@ -415,10 +474,6 @@ inoremap <expr> <CR> pumvisible() ? "<C-R>=ExpandSnippetOrCarriageReturn()<CR>" 
 ""function! s:my_cr_function()
 ""  return pumvisible() ? neocomplete#close_popup() : "\<CR>" 
 ""endfunction
-
-" <C-h>, <BS>: close popup and delete backword char.
-inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Vim-Php-Namespace
@@ -536,6 +591,15 @@ function! HLNext (blinktime)
     call matchdelete(ring)
     redraw
 endfunction
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Autoreload Vim Config on Save
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+augroup myvimrchooks
+    au!
+    autocmd bufwritepost .vimrc source ~/.vimrc
+augroup END
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Backups, undos, and swap files
