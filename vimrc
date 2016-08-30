@@ -10,10 +10,7 @@ Plug 'sniphpets/sniphpets'
 Plug 'sniphpets/sniphpets-common'
 Plug 'sniphpets/sniphpets-symfony'
 Plug 'sniphpets/sniphpets-doctrine'
-"Plug 'honza/vim-snippets'
-
 Plug 'bonsaiben/bootstrap-snippets'
-
 Plug 'arnaud-lb/vim-php-namespace'
 Plug 'phpvim/phpcd.vim', { 'for': 'php' , 'do': 'composer update' }
 Plug 'ludovicchabant/vim-gutentags'
@@ -34,9 +31,11 @@ Plug 'airblade/vim-gitgutter'
 
 " Files - Utilities
 Plug 'scrooloose/nerdtree'
-Plug 'airblade/vim-rooter'
 Plug 'Shougo/unite.vim'
-Plug 'Shougo/neomru.vim'
+Plug 'Shougo/neomru.vim'  "Source recent files
+Plug 'Shougo/neco-vim'    "Source neocomplete
+Plug 'Shougo/echodoc.vim'
+
 
 Plug 'majutsushi/tagbar'
 Plug 'tpope/vim-surround'
@@ -245,6 +244,7 @@ let g:syntastic_javascript_checkers=['jshint']
 let g:syntastic_stl_format = '[%E{Err: %fe #%e}%B{, }%W{Warn: %fw #%w}]' " Syntastical statusline format
                                                                          "Ignored when powerline is enabled.
 
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Airline
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -252,6 +252,13 @@ let g:syntastic_stl_format = '[%E{Err: %fe #%e}%B{, }%W{Warn: %fw #%w}]' " Synta
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
+
+""""""""""""""""""""""""""""""""""""""""""""""""""
+" Echodoc documentation in echo area
+""""""""""""""""""""""""""""""""""""""""""""""""""
+set noshowmode
+let g:echodoc_enable_at_startup = 1
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Indentline
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -260,18 +267,27 @@ let g:indentLine_color_dark = 1 " (default: 2)
 "let g:indentLine_char = '┊'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Rooter
+" Root.vim
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-let g:rooter_patterns = ['src/', '.git/','.hg/','_darcs','.bzr']
-let g:rooter_silent_chdir = 1
+" Limit the automatic behavior to only html/css/js files
+"let g:root#auto = 0
+let g:root#autocmd_patterns = "*.html,*.css,*.js,*.php,*.twig"
+let g:root#patterns = ['.git', '_darcs', '.hg', '.bzr', '.svn']
+let g:root#echo = 1
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Unite
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-nnoremap <silent><leader>s :Unite -toggle -auto-resize -buffer-name=file file_mru buffer<cr>
-nnoremap <silent><leader>f :Unite -toggle -auto-resize -buffer-name=file file_rec<cr>
+" Root helper using NERDTree
+autocmd BufEnter * if &ft !~ '^nerdtree$' | silent! lcd %:p:h | endif
+
+nnoremap <silent><leader>s :Unite -toggle -auto-resize -buffer-name=file neomru/file buffer<cr>
+nnoremap <silent><leader>f :Unite -toggle -auto-resize -buffer-name=file file_rec:!<cr>
+nnoremap <leader>q :Unite grep:.<cr>
+nnoremap <space>/ :Unite -no-empty -no-resize grep<cr>
+nnoremap <space>s :Unite -quick-match buffer<cr>
 
 call unite#custom#profile('default', 'context', {
 \   'direction': 'botright',
@@ -294,6 +310,7 @@ function! s:unite_settings()
     nmap <buffer> Q <plug>(unite_exit)
     nmap <buffer> <esc> <plug>(unite_exit)
     imap <buffer> <esc> <plug>(unite_exit)
+    nmap <buffer> <C-p> <Plug>(unite_toggle_auto_preview)
 endfunction
 autocmd FileType unite call s:unite_settings()
 
@@ -305,26 +322,17 @@ let s:unite_ignores = [
 set wildignore+=*/tmp/*,*.so,*~,*.zip,
             \*/.git/*,*/.svn/*,*/.phpcd/*,
             \*/vendor/*,node_modules,
-            \*/var/*,
+            \*/var/*,*/cache/*,*/logs/*,
             \*/.DS_Store,coverage,
             \*/*bundle.js,*.map
+
+let g:ackprg = 'ag --nogroup --nocolor --column'
 
 call unite#custom#source(
   \  'file_rec,file_mru,file,buffer,grep',
   \  'ignore_globs',
   \  split(&wildignore, ",")
   \ )
-
-if executable('ag')
-    " Use ag (the silver searcher)
-    " https://github.com/ggreer/the_silver_searcher
-    let g:unite_source_grep_command = 'ag'
-    let g:unite_source_grep_default_opts =
-                \ '-i --vimgrep --hidden --ignore ' .
-                \ '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
-    let g:unite_source_grep_recursive_opt = ''
-endif
-
 
 " search a file in the filetree
 "nnoremap :split<cr> :<C-u>Unite -start-insert file_rec/async<cr>
@@ -375,7 +383,6 @@ let g:phpcomplete_parse_docblock_comments = 1
 " Neocomplete
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-"neocomplete.vim
 let g:acp_enableAtStartup                           = 0  " Disable AutoComplPop.
 let g:neocomplete#enable_at_startup                 = 1  " Use neocomplete
 "let g:neocomplete_disable_auto_complete            = 1  " Disable Auto only manual 
@@ -591,15 +598,6 @@ function! HLNext (blinktime)
     call matchdelete(ring)
     redraw
 endfunction
-
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Autoreload Vim Config on Save
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-augroup myvimrchooks
-    au!
-    autocmd bufwritepost .vimrc source ~/.vimrc
-augroup END
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Backups, undos, and swap files
