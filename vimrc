@@ -267,16 +267,6 @@ let g:indentLine_color_dark = 1 " (default: 2)
 "let g:indentLine_char = '┊'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Root.vim
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" Limit the automatic behavior to only html/css/js files
-"let g:root#auto = 0
-let g:root#autocmd_patterns = "*.html,*.css,*.js,*.php,*.twig"
-let g:root#patterns = ['.git', '_darcs', '.hg', '.bzr', '.svn']
-let g:root#echo = 1
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Unite
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -285,9 +275,9 @@ autocmd BufEnter * if &ft !~ '^nerdtree$' | silent! lcd %:p:h | endif
 
 nnoremap <silent><leader>s :Unite -toggle -auto-resize -buffer-name=file neomru/file buffer<cr>
 nnoremap <silent><leader>f :Unite -toggle -auto-resize -buffer-name=file file_rec:!<cr>
-nnoremap <leader>q :Unite grep:.<cr>
-nnoremap <space>/ :Unite -no-empty -no-resize grep<cr>
-nnoremap <space>s :Unite -quick-match buffer<cr>
+nnoremap <silent><leader>l :Unite -toggle -auto-resize -buffer-name=line<cr>
+" reset not it is <C-l> normally
+nnoremap <leader>r <Plug>(unite_restart)"
 
 call unite#custom#profile('default', 'context', {
 \   'direction': 'botright',
@@ -301,8 +291,9 @@ call unite#custom#profile('default', 'context', {
 
 
 let g:unite_data_directory='~/.vim/unite'
+let g:unite_enable_short_source_names = 1
 
-"let g:unite_source_file_mru_limit = 200
+
 "Fuzzy search
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
 
@@ -334,10 +325,14 @@ call unite#custom#source(
   \  split(&wildignore, ",")
   \ )
 
-" search a file in the filetree
-"nnoremap :split<cr> :<C-u>Unite -start-insert file_rec/async<cr>
-" reset not it is <C-l> normally
-nnoremap <leader>r <Plug>(unite_restart)"
+""" Complete by Filename
+""call unite#custom#source(
+""            \ 'buffer,file_rec/async,file_rec', 'matchers',
+""            \ ['converter_tail', 'matcher_default'])
+""call unite#custom#source(
+""            \ 'file_rec/async,file_rec', 'converters',
+""            \ ['converter_file_directory'])
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Tags and Omnicomplete configs
