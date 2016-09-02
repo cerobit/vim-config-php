@@ -275,24 +275,22 @@ autocmd BufEnter * if &ft !~ '^nerdtree$' | silent! lcd %:p:h | endif
 
 nnoremap <silent><leader>s :Unite -toggle -auto-resize -buffer-name=file neomru/file buffer<cr>
 nnoremap <silent><leader>f :Unite -toggle -auto-resize -buffer-name=file file_rec:!<cr>
-nnoremap <silent><leader>l :Unite -toggle -auto-resize -buffer-name=line<cr>
+nnoremap <silent><leader>d :Unite -toggle -auto-resize file<cr>
+nnoremap <silent><leader>l :Unite -toggle -auto-resize line<cr>
 " reset not it is <C-l> normally
 nnoremap <leader>r <Plug>(unite_restart)"
 
 call unite#custom#profile('default', 'context', {
 \   'direction': 'botright',
 \   'start_insert': 1,
-\   'vertical_preview': 1,
 \   'prompt': '» ',
 \   'candidate-icon': '-',
 \   'marked-icon': '+',
 \   'winheight': 20
 \ })
 
-
 let g:unite_data_directory='~/.vim/unite'
 let g:unite_enable_short_source_names = 1
-
 
 "Fuzzy search
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
@@ -326,13 +324,12 @@ call unite#custom#source(
   \ )
 
 """ Complete by Filename
-""call unite#custom#source(
-""            \ 'buffer,file_rec/async,file_rec', 'matchers',
-""            \ ['converter_tail', 'matcher_default'])
-""call unite#custom#source(
-""            \ 'file_rec/async,file_rec', 'converters',
-""            \ ['converter_file_directory'])
-
+"""call unite#custom#source(
+"""            \ 'buffer,file_rec/async,file_rec', 'matchers',
+"""            \ ['converter_tail', 'matcher_default'])
+"""call unite#custom#source(
+"""            \ 'file_rec/async,file_rec', 'converters',
+"""            \ ['converter_file_directory'])
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Tags and Omnicomplete configs
@@ -380,7 +377,6 @@ let g:phpcomplete_parse_docblock_comments = 1
 
 let g:acp_enableAtStartup                           = 0  " Disable AutoComplPop.
 let g:neocomplete#enable_at_startup                 = 1  " Use neocomplete
-"let g:neocomplete_disable_auto_complete            = 1  " Disable Auto only manual 
 let g:neocomplete#enable_auto_close_preview         = 1  " Auto Close
 let g:neocomplete#enable_auto_select                = 1  " AutoComplPop like behavior.
 let g:neocomplete#sources#buffer#max_keyword_width  = 60 " Set max syntax keyword length
@@ -465,17 +461,16 @@ function ExpandSnippetOrCarriageReturn()
     if g:ulti_expand_or_jump_res > 0
         return snippet
     else
-        return "\<CR>"
+        return neocomplete#close_popup()
     endif
 endfunction
 inoremap <expr> <CR> pumvisible() ? "<C-R>=ExpandSnippetOrCarriageReturn()<CR>" : "\<CR>"
 
 
-""" <CR>: close popup and save indent.
-""inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-""function! s:my_cr_function()
-""  return pumvisible() ? neocomplete#close_popup() : "\<CR>" 
-""endfunction
+"" call neocomplete#custom#source('_', 'converters',
+""     \ ['converter_add_paren', 'converter_remove_overlap',
+""     \  'converter_delimiter', 'converter_abbr'])
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Vim-Php-Namespace
