@@ -34,14 +34,15 @@ Plug 'scrooloose/nerdtree'
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/neomru.vim'  "Source recent files
 Plug 'Shougo/neco-vim'    "Source neocomplete
+Plug 'tsukkee/unite-tag'  "Source tags source
 Plug 'Shougo/echodoc.vim'
 
 
-Plug 'majutsushi/tagbar'
 Plug 'tpope/vim-surround'
 Plug 'mattn/emmet-vim'
 Plug 'sjl/gundo.vim'
-Plug 'tmhedberg/matchit'
+"Plug 'tmhedberg/matchit'
+Plug 'gcmt/breeze.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'bling/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -64,16 +65,17 @@ call plug#end()
 " General Options
 """"""""""""""""""""""""""""""""""""""""""""""""""
 
-if has('gui_running')
-    set guioptions-=T
-    set guioptions+=e
-    set guitablabel=%M\ %t
-    set guioptions-=m  "remove menu bar
-    set guioptions-=T  "remove toolbar
-    set guioptions-=r  "remove right-hand scroll bar
+augroup autoReloadVimConfig
+    au!
+    autocmd bufwritepost vimrc source ~/.vim/vimrc
+augroup END
 
+if has('gui_running')
+    exec('set guioptions=i')
     if has("x11")
-        set guifont=Droid\ Sans\ Mono\ for\ Powerline\ 10
+        if ( &guifont !="Droid\ Sans\ Mono\ for\ Powerline\ 10" )
+            set guifont=Droid\ Sans\ Mono\ for\ Powerline\ 10
+        endif
         "set guifont=Inconsolata-g\ for\ Powerline\ 10
         "set guifont=Hack-Regular\ 10
         let g:airline_powerline_fonts = 1
@@ -83,10 +85,7 @@ if has('gui_running')
         set guifont=Consolas:h12
         au GUIEnter * simalt ~x
     endif
-
     autocmd GUIEnter * set vb t_vb=
-
-
 elseif $TERM == "xterm-256color"
     set t_Co=256
 endif
@@ -122,6 +121,7 @@ set background=dark                          " We are dark people...
 
 " Gundo python setting
 let g:gundo_prefer_python3 = 1
+
 
 
 
@@ -194,11 +194,7 @@ nnoremap <F5> :GundoToggle<CR>
 noremap  <F6>  :bprev <CR>
 noremap  <F7>  :bnext <CR>
 noremap  <F8>  :bd <CR>
-nnoremap <leader>j :
-" Fast Jump to function
-nnoremap <leader>f :/function<CR>zz:nohlsearch<CR>
-" Tagbar Activation
-noremap  <silent><leader>t :TagbarOpenAutoClose<CR>
+
 " Clean highlight after search
 noremap  <silent>// :nohlsearch<CR>
 " Fast Indent code block inner {
@@ -233,6 +229,29 @@ map <leader>c "+y
     vnoremap <A-k> :m '<-2<CR>gv=gv
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"  Matchit vim for tags html, php (if else ....)
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""ñ"
+packadd! matchit
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"  Match - Breeze
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" jump to all visible opening tags after the cursor position
+nmap <leader>j <Plug>(breeze-jump-tag-forward)
+" jump to all visible opening tags before the cursor position
+nmap <leader>J <Plug>(breeze-jump-tag-backward)
+
+" jump to all visible HTML attributes after the cursor position
+nmap <leader>a <Plug>(breeze-jump-attribute-forward)
+" jump to all visible HTML attributes before the cursor position
+nmap <leader>A <Plug>(breeze-jump-attribute-backward)
+
+" move to the next attribute
+au FileType html,twig nmap <TAB> <Plug>(breeze-next-tag)
+au FileType html,twig nmap <S-TAB> <Plug>(breeze-prev-tag)
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Syntastic
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:syntastic_php_checkers=['php' ]       " Syntastics array options ejem chain of php phpcs phpms
@@ -243,7 +262,6 @@ let g:syntastic_javascript_checkers=['jshint']
 
 let g:syntastic_stl_format = '[%E{Err: %fe #%e}%B{, }%W{Warn: %fw #%w}]' " Syntastical statusline format
                                                                          "Ignored when powerline is enabled.
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Airline
@@ -273,12 +291,20 @@ let g:indentLine_color_dark = 1 " (default: 2)
 " Root helper using NERDTree
 autocmd BufEnter * if &ft !~ '^nerdtree$' | silent! lcd %:p:h | endif
 
+"<C-l>  Clear cache
+
+" Recent Buffers
 nnoremap <silent><leader>s :Unite -toggle -auto-resize -buffer-name=file neomru/file buffer<cr>
+" Buffers on Project dir Recursive
 nnoremap <silent><leader>f :Unite -toggle -auto-resize -buffer-name=file file_rec:!<cr>
+" Buffers on pwd()
 nnoremap <silent><leader>d :Unite -toggle -auto-resize file<cr>
+" Search multiline on buffer
 nnoremap <silent><leader>l :Unite -toggle -auto-resize line<cr>
-" reset not it is <C-l> normally
-nnoremap <leader>r <Plug>(unite_restart)"
+" Tags Buffer
+nnoremap <silent><leader>t :Unite -toggle -auto-resize tag:%<cr>
+" Reset not it is <C-l> normally
+nnoremap <leader>r <Plug>(unite_restart)
 
 call unite#custom#profile('default', 'context', {
 \   'direction': 'botright',
@@ -315,13 +341,14 @@ set wildignore+=*/tmp/*,*.so,*~,*.zip,
             \*/.DS_Store,coverage,
             \*/*bundle.js,*.map
 
-let g:ackprg = 'ag --nogroup --nocolor --column'
 
 call unite#custom#source(
   \  'file_rec,file_mru,file,buffer,grep',
   \  'ignore_globs',
   \  split(&wildignore, ",")
   \ )
+
+let g:ackprg = 'ag --nogroup --nocolor --column'
 
 """ Complete by Filename
 """call unite#custom#source(
@@ -456,7 +483,7 @@ let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 
 " Smart CR 
 let g:ulti_expand_or_jump_res = 0
-function ExpandSnippetOrCarriageReturn()
+function! ExpandSnippetOrCarriageReturn()
     let snippet = UltiSnips#ExpandSnippetOrJump()
     if g:ulti_expand_or_jump_res > 0
         return snippet
