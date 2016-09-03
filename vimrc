@@ -32,17 +32,16 @@ Plug 'airblade/vim-gitgutter'
 " Files - Utilities
 Plug 'scrooloose/nerdtree'
 Plug 'Shougo/unite.vim'
-Plug 'Shougo/neomru.vim'  "Source recent files
-Plug 'Shougo/neco-vim'    "Source neocomplete
-Plug 'tsukkee/unite-tag'  "Source tags source
+Plug 'Shougo/neomru.vim'     "Source recent files
+Plug 'Shougo/neco-vim'       "Source neocomplete
+Plug 'tsukkee/unite-tag'     "Source tags source
 Plug 'Shougo/echodoc.vim'
 
 
 Plug 'tpope/vim-surround'
 Plug 'mattn/emmet-vim'
 Plug 'sjl/gundo.vim'
-"Plug 'tmhedberg/matchit'
-Plug 'gcmt/breeze.vim'
+Plug 'gcmt/breeze.vim'      "Easy tag, attribute navigation
 Plug 'jiangmiao/auto-pairs'
 Plug 'bling/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
