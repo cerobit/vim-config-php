@@ -31,11 +31,12 @@ Plug 'airblade/vim-gitgutter'
 
 " Files - Utilities
 Plug 'scrooloose/nerdtree'
-Plug 'Shougo/unite.vim'
-Plug 'Shougo/neomru.vim'     "Source recent files
-Plug 'Shougo/neco-vim'       "Source neocomplete
-Plug 'tsukkee/unite-tag'     "Source tags source
+Plug 'Shougo/unite.vim'      " Fuzzy file complettion
+Plug 'Shougo/neomru.vim'     " Source recent files
+Plug 'Shougo/neco-vim'       " Source neocomplete
+Plug 'tsukkee/unite-tag'     " Source tags source
 Plug 'Shougo/echodoc.vim'
+Plug 'unblevable/quick-scope'
 
 
 Plug 'tpope/vim-surround'
@@ -219,7 +220,7 @@ map <leader>c "+y
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "  Easy move line or visual block up down
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"Movin a line
+" Moving lines
     nnoremap <A-j> :m .+1<CR>==
     nnoremap <A-k> :m .-2<CR>==
     inoremap <A-j> <Esc>:m .+1<CR>==gi
@@ -231,6 +232,14 @@ map <leader>c "+y
 "  Matchit vim for tags html, php (if else ....)
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""ñ"
 packadd! matchit
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Quick scope (Fast move in line F or  f)
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""ñ"
+
+" Trigger a highlight only when pressing f and F.
+let g:qs_highlight_on_keys = ['f', 'F', 't','T']
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "  Match - Breeze
