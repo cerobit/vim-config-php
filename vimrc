@@ -13,14 +13,14 @@ Plug 'sniphpets/sniphpets-doctrine'
 Plug 'bonsaiben/bootstrap-snippets'
 Plug 'arnaud-lb/vim-php-namespace'
 Plug 'phpvim/phpcd.vim', { 'for': 'php' , 'do': 'composer update' }
-Plug 'ludovicchabant/vim-gutentags'
+Plug 'ludovicchabant/vim-gutentags' " Auto tag generation 
 
 " Syntax
 Plug 'scrooloose/syntastic'
 Plug 'nelsyeung/twig.vim'  " Enables complettion also
 Plug 'elzr/vim-json'
 Plug '2072/PHP-Indenting-for-VIm'
-Plug 'Yggdroot/indentLine'
+Plug 'Yggdroot/indentLine' " Vertical line indicator for blocks
 Plug 'JulesWang/css.vim'
 Plug 'hail2u/vim-css3-syntax'
 Plug 'tpope/vim-commentary'
@@ -35,8 +35,8 @@ Plug 'Shougo/unite.vim'      " Fuzzy file complettion
 Plug 'Shougo/neomru.vim'     " Source recent files
 Plug 'Shougo/neco-vim'       " Source neocomplete
 Plug 'tsukkee/unite-tag'     " Source tags source
-Plug 'Shougo/echodoc.vim'
-Plug 'unblevable/quick-scope'
+Plug 'Shougo/echodoc.vim'    " Extra information display in echo area
+Plug 'unblevable/quick-scope' " Fast jump Left Right marks
 
 
 Plug 'tpope/vim-surround'
@@ -516,11 +516,6 @@ function! IPhpInsertUse()
 endfunction
 autocmd FileType php inoremap <Leader>u <Esc>:call IPhpInsertUse()<CR>
 autocmd FileType php noremap <Leader>u :call PhpInsertUse()<CR>
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" CTAGS - UPDATE
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nnoremap <F11> :exe "!sh ~/.vim/scripts/ctagsupdate.sh " . shellescape(expand('%:p:h')) . " ."<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Text, tab and indent related
