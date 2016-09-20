@@ -376,6 +376,7 @@ if has('autocmd')
   augroup OmniCompleteModes
     autocmd!
     autocmd FileType php           nested setlocal omnifunc=phpcd#CompletePHP
+    autocmd FileType php           nested setlocal iskeyword-=$
     autocmd FileType python        nested setlocal omnifunc=pythoncomplete#Complete
     autocmd FileType css           nested setlocal omnifunc=csscomplete#CompleteCSS
     autocmd FileType html,markdown nested setlocal omnifunc=htmlcomplete#CompleteTags
@@ -383,6 +384,7 @@ if has('autocmd')
     autocmd FileType xml           nested setlocal omnifunc=xmlcomplete#CompleteTags
   augroup END
 endif
+
 
 "set complete=.,w,b,t,i,k
 set complete=.,t
@@ -397,14 +399,8 @@ set completeopt=longest,menuone "like an editor
  endif
 
 
+"autocmd CompleteDone * pclose " 补全完成后自动关闭预览窗口
 " autocmd InsertLeave * if pumvisible() == 0|pclose|endif
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" PhpComplete
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:phpcomplete_complete_for_unknown_classes = 1
-let g:phpcomplete_search_tags_for_variables = 1
-let g:phpcomplete_parse_docblock_comments = 1
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Neocomplete
