@@ -17,7 +17,7 @@ Plug 'ludovicchabant/vim-gutentags' " Auto tag generation
 
 " Syntax
 Plug 'scrooloose/syntastic'
-Plug 'nelsyeung/twig.vim'  " Enables complettion also
+Plug 'lumiliet/vim-twig'  " Syntax + Snippets
 Plug 'elzr/vim-json'
 Plug '2072/PHP-Indenting-for-VIm'
 Plug 'Yggdroot/indentLine' " Vertical line indicator for blocks
@@ -38,6 +38,8 @@ Plug 'tsukkee/unite-tag'     " Source tags source
 Plug 'Shougo/echodoc.vim'    " Extra information display in echo area
 Plug 'unblevable/quick-scope' " Fast jump Left Right marks
 
+" Symfony snippets
+" Plug 'qbbr/vim-symfony'
 
 Plug 'tpope/vim-surround'
 Plug 'mattn/emmet-vim'
@@ -54,7 +56,7 @@ Plug 'morhetz/gruvbox'
 Plug 'w0ng/vim-hybrid'
 Plug 'atelierbram/vim-colors_duotones'
 
-" Magic 
+" Magic
 " Plug '907th/vim-auto-save'
 
 " Add plugins to &runtimepath
@@ -230,13 +232,13 @@ map <leader>c "+y
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "  Matchit vim for tags html, php (if else ....)
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""ñ"
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 packadd! matchit
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Quick scope (Fast move in line F or  f)
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""ñ"
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Trigger a highlight only when pressing f and F.
 let g:qs_highlight_on_keys = ['f', 'F', 't','T']
@@ -455,7 +457,7 @@ inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
 " Custon TAB function to activate completion on Ultisnips + Neocomplete
 
 " Folders with Snippets
-let g:UltiSnipsSnippetDirectories=["UltiSnips", "coolsnippets"]
+let g:UltiSnipsSnippetDirectories=["UltiSnips", "bit-snippets"]
 
 function! g:UltiSnips_Complete()
     call UltiSnips#ExpandSnippet()
