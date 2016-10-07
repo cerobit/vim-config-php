@@ -417,7 +417,7 @@ let g:neocomplete#max_list                          = 60 " Max list
 let g:neocomplete#enable_smart_case                 = 0  " Use smartcase
 let g:neocomplete#enable_fuzzy_completion           = 1  " Fuzzy
 let g:neocomplete#lock_buffer_name_pattern          = '\*ku\*'
-let g:neocomplete#enable_refresh_always             = 0
+let g:neocomplete#enable_refresh_always             = 1
 
 " Sources
 let g:neocomplete#sources = {}
