@@ -378,7 +378,6 @@ if has('autocmd')
   augroup OmniCompleteModes
     autocmd!
     autocmd FileType php           nested setlocal omnifunc=phpcd#CompletePHP
-    autocmd FileType php           nested setlocal iskeyword-=$
     autocmd FileType python        nested setlocal omnifunc=pythoncomplete#Complete
     autocmd FileType css           nested setlocal omnifunc=csscomplete#CompleteCSS
     autocmd FileType html,markdown nested setlocal omnifunc=htmlcomplete#CompleteTags
@@ -392,13 +391,6 @@ endif
 set complete=.,t
 set completeopt=longest,menuone "like an editor
 
- "If not specific completion scripts exits use vim general code
- if has("autocmd") && exists("+omnifunc")
-    autocmd Filetype *
-                 \if &omnifunc == "" |
-                 \setlocal omnifunc=syntaxcomplete#Complete |
-                 \endif
- endif
 
 
 "autocmd CompleteDone * pclose " 补全完成后自动关闭预览窗口
@@ -422,7 +414,7 @@ let g:neocomplete#enable_refresh_always             = 1
 " Sources
 let g:neocomplete#sources = {}
 "  Use Omni -> And Omni uses PhpCD
-let g:neocomplete#sources.php = [ 'ultisnips', 'omni','buffer']
+let g:neocomplete#sources.php = ['omni','buffer', 'tag']
 
 " Define dictionary.
 let g:neocomplete#sources#dictionary#dictionaries = {
@@ -438,8 +430,9 @@ let g:neocomplete#keyword_patterns['default'] = '\h\w*'
 if !exists('g:neocomplete#sources#omni#input_patterns')
   let g:neocomplete#sources#omni#input_patterns = {}
 endif
-let g:neocomplete#sources#omni#input_patterns.php = '\h\w*\|[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
 
+let g:neocomplete#sources#omni#input_patterns.php =
+            \ '\h\w*\|[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
 
 " Plugin key-mappings.
 inoremap <expr><C-g>     neocomplete#undo_completion()

@@ -2,6 +2,5 @@
 !vimrc
 !README.md
 !.gitignore
-!/coolsnippets/*
-!/scripts/*
-!/guttentags/*
+!./bit-snippets/*
+!./scripts/*

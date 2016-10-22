@@ -1,0 +1,65 @@
+snippet col "Column Doctrine"
+/**
+ * @var ${1:string}
+ *
+ * @ORM\Column(name="${2:var}", type="$1" ${3:, length=255} )
+ */
+private $$2;
+endsnippet
+
+snippet mto "ManyToOne"
+/**
+ * @ORM\ManyToOne(targetEntity="${1:Target}", inversedBy="${3:`!v substitute(substitute(expand('%:t:r'), '\v^(.)', '\l\1', ''), '\v(\u)', '_\l\1', 'g')`}s")
+ * @ORM\JoinColumn(name="${1/.*/\L$0\E/g}_id", referencedColumnName="id", nullable=false)
+ */
+private $${1/\w+\s*/\l$0/};
+endsnippet
+
+snippet otm "OneToMany"
+/**
+ * @ORM\OneToMany(targetEntity="${1:Target}", mappedBy="${3:`!v substitute(substitute(expand('%:t:r'), '\v^(.)', '\l\1', ''), '\v(\u)', '_\l\1', 'g')`}")
+ */
+private $${1/\w+\s*/\l$0/}s;
+endsnippet
+
+snippet mtm "ManyToMany"
+/**
+ * @ORM\ManyToMany(targetEntity="${1:Target}", ${2:inversed}By="${3:`!v substitute(substitute(expand('%:t:r'), '\v^(.)', '\l\1', ''), '\v(\u)', '_\l\1', 'g')`}s")
+ * @ORM\JoinTable(name="${3/\w+\s*/\l$0/}_${1/\w+\s*/\l$0/}s")
+ */
+private $${1/\w+\s*/\l$0/}s;
+endsnippet
+
+snippet oto "OneToOne"
+/**
+ * @ORM\OneToOne(targetEntity="${1:Target}", ${2:inversed}By="${3:`!v substitute(substitute(expand('%:t:r'), '\v^(.)', '\l\1', ''), '\v(\u)', '_\l\1', 'g')`}s")
+ * @ORM\JoinColumn(name="${1/.*/\L$0\E/g}_id", referencedColumnName="id", nullable=false)
+ */
+ private $${1/\w+\s*/\l$0/};
+endsnippet
+
+snippet inhjoined  "Class Table Inheritance"
+/**
+ * @ORM\Table()
+ * @ORM\Entity
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="discr", type="string")
+ * @ORM\DiscriminatorMap({"${1:entidadpadre}" = "${1/\w+\s*/\u$0/}", "${2:entidadhija_uno}" = "${2/\w+\s*/\u$0/}",})
+ */
+endsnippet
+
+snippet unique "Unique entity"
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
+ * @UniqueEntity("${1:campo}" )
+endsnippet
+
+snippet uniquemultiple  "Unique entity multiple fields"
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
+ * @UniqueEntity(
+ *     fields={"${1:campo_uno}", "${2:campo_dos}"},
+ *     errorPath="$1",
+ *     message="$1 y $2 ya existen y no pueden ser duplicados"
+ * )
+endsnippet
