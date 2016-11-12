@@ -31,20 +31,16 @@ Plug 'airblade/vim-gitgutter'
 
 " Files - Utilities
 Plug 'scrooloose/nerdtree'
-Plug 'Shougo/unite.vim'      " Fuzzy file complettion
-Plug 'Shougo/neomru.vim'     " Source recent files
-Plug 'Shougo/neco-vim'       " Source neocomplete
-Plug 'tsukkee/unite-tag'     " Source tags source
-Plug 'Shougo/echodoc.vim'    " Extra information display in echo area
+Plug 'Shougo/unite.vim'       " Fuzzy file complettion
+Plug 'Shougo/neomru.vim'      " Source recent files
+Plug 'Shougo/neco-vim'        " Source neocomplete
+Plug 'tsukkee/unite-tag'      " Source tags source
+Plug 'Shougo/echodoc.vim'     " Extra information display in echo area
 Plug 'unblevable/quick-scope' " Fast jump Left Right marks
-
-" Symfony snippets
-" Plug 'qbbr/vim-symfony'
-
 Plug 'tpope/vim-surround'
 Plug 'mattn/emmet-vim'
 Plug 'sjl/gundo.vim'
-Plug 'gcmt/breeze.vim'      "Easy tag, attribute navigation
+Plug 'gcmt/breeze.vim'        " Easy html tag, attribute navigation
 Plug 'jiangmiao/auto-pairs'
 Plug 'bling/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -414,7 +410,7 @@ let g:neocomplete#enable_refresh_always             = 1
 " Sources
 let g:neocomplete#sources = {}
 "  Use Omni -> And Omni uses PhpCD
-let g:neocomplete#sources.php = ['omni','buffer', 'tag']
+let g:neocomplete#sources.php = ['ultisnips','omni','buffer', 'tag']
 
 " Define dictionary.
 let g:neocomplete#sources#dictionary#dictionaries = {
