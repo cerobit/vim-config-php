@@ -3,8 +3,9 @@ filetype off                  " required
 
 " VimPlug
 call plug#begin('~/.vim/plugged')
-" Snippets - Autocomplete
-Plug 'Shougo/neocomplete.vim'
+
+Plug 'maralla/completor.vim'
+
 Plug 'SirVer/ultisnips'
 Plug 'sniphpets/sniphpets'
 Plug 'sniphpets/sniphpets-common'
@@ -12,8 +13,6 @@ Plug 'sniphpets/sniphpets-symfony'
 Plug 'sniphpets/sniphpets-doctrine'
 Plug 'bonsaiben/bootstrap-snippets'
 Plug 'arnaud-lb/vim-php-namespace'
-Plug 'phpvim/phpcd.vim', { 'for': 'php' , 'do': 'composer update' }
-Plug 'ludovicchabant/vim-gutentags' " Auto tag generation 
 
 " Syntax
 Plug 'scrooloose/syntastic'
@@ -38,7 +37,6 @@ Plug 'tsukkee/unite-tag'      " Source tags source
 Plug 'Shougo/echodoc.vim'     " Extra information display in echo area
 Plug 'unblevable/quick-scope' " Fast jump Left Right marks
 Plug 'tpope/vim-surround'
-Plug 'mattn/emmet-vim'
 Plug 'sjl/gundo.vim'
 Plug 'gcmt/breeze.vim'        " Easy html tag, attribute navigation
 Plug 'jiangmiao/auto-pairs'
@@ -46,16 +44,9 @@ Plug 'bling/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
 " Color Schemas & Icons
-Plug 'mhartington/oceanic-next'
-Plug 'altercation/vim-colors-solarized'
-Plug 'morhetz/gruvbox'
-Plug 'w0ng/vim-hybrid'
+Plug 'kaicataldo/material.vim'
 Plug 'atelierbram/vim-colors_duotones'
 
-" Magic
-" Plug '907th/vim-auto-save'
-
-" Add plugins to &runtimepath
 call plug#end()
 
 
@@ -124,54 +115,22 @@ let g:gundo_prefer_python3 = 1
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"  Colors
+" Color Scheme
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-try
-   silent colors OceanicNext
-   let g:airline_theme='oceanicnext'
-   "colors solarized
-   "let g:solarized_contrast="high"    "default value is normal
-catch /^Vim\%((\a\+)\)\=:E185/
-  " deal wit it
-endtry
 
-nnoremap <F9> :call ToggleColours()<CR>
-function! ToggleColours()
-    if g:colors_name == 'OceanicNext'
-        let g:airline_theme='solarized'
-        let g:solarized_contrast="high"
-        silent colors solarized
-    elseif g:colors_name == 'solarized'
-        let g:gruvbox_contrast_dark='hard'
-        let g:airline_theme='gruvbox'
-        silent colors gruvbox
-    elseif g:colors_name == 'gruvbox'
-        silent colors duotone-dark
-    elseif g:colors_name == 'duotone-dark'
-        silent colors duotone-darkearth
-    elseif g:colors_name == 'duotone-darkearth'
-        silent colors duotone-darkdesert
-    elseif g:colors_name == 'duotone-darkdesert'
-        silent colors duotone-darkforest
-    elseif g:colors_name == 'duotone-darkforest'
-        silent colors duotone-darkpark
-    elseif g:colors_name == 'duotone-darkpark'
-        silent colors duotone-darkmeadow
-    elseif g:colors_name == 'duotone-darkmeadow'
-        silent colors duotone-darksea
-    elseif g:colors_name == 'duotone-darksea'
-        silent colors duotone-darkpool
-    elseif g:colors_name == 'duotone-darkpool'
-        silent colors duotone-darkspace
-    elseif g:colors_name == 'duotone-darkspace'
-        silent colors duotone-darkheath
-    elseif g:colors_name == 'duotone-darkheath'
-        silent colors duotone-darkcave
-    elseif g:colors_name == 'duotone-darkcave'
-        let g:airline_theme='oceanicnext'
-        silent colors OceanicNext
-    endif
-endfunction
+if (has("nvim"))
+  "For Neovim 0.1.3 and 0.1.4 < https://github.com/neovim/neovim/pull/2198 >
+  let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+endif
+if (has("termguicolors"))
+  set termguicolors
+endif
+
+"let g:material_theme_style = 'default' | 'palenight' | 'dark'
+let g:material_theme_style = 'palenight'
+let g:airline_theme = 'material'
+set background=dark
+colorscheme material
 
 " In many terminal emulators the mouse works just fine, thus enable it.
 if v:version >= 702 && has('mouse')
@@ -187,19 +146,16 @@ endif
 
 let mapleader="ñ"
 
-nnoremap <leader><leader> :update<CR>
+nnoremap <leader><leader> :update<CR>zz
 nnoremap <F5> :GundoToggle<CR>
-noremap  <F6>  :bprev <CR>
-noremap  <F7>  :bnext <CR>
-noremap  <F8>  :bd <CR>
+noremap  <A-l>  :bprev <CR>
+noremap  <A-h>  :bnext <CR>
+noremap  <leader>q  :bd <CR>
 
 " Clean highlight after search
 noremap  <silent>// :nohlsearch<CR>
 " Fast Indent code block inner {
 nnoremap <leader>i =i{<C-o>
-
-"Reload the first tab of chromium
-nnoremap <silent>,, :silent !sh ~/.vim/scripts/reload_cromium.sh<CR>
 
 " Center on scroll
 nnoremap <C-u> <C-u>zz
@@ -225,12 +181,6 @@ map <leader>c "+y
     inoremap <A-k> <Esc>:m .-2<CR>==gi
     vnoremap <A-j> :m '>+1<CR>gv=gv
     vnoremap <A-k> :m '<-2<CR>gv=gv
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"  Matchit vim for tags html, php (if else ....)
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-packadd! matchit
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Quick scope (Fast move in line F or  f)
@@ -356,24 +306,16 @@ call unite#custom#source(
 
 let g:ackprg = 'ag --nogroup --nocolor --column'
 
-""" Complete by Filename
-"""call unite#custom#source(
-"""            \ 'buffer,file_rec/async,file_rec', 'matchers',
-"""            \ ['converter_tail', 'matcher_default'])
-"""call unite#custom#source(
-"""            \ 'file_rec/async,file_rec', 'converters',
-"""            \ ['converter_file_directory'])
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Tags and Omnicomplete configs
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:gutentags_exclude = ['*.css', '*.html', '*.js','.phpcd/*' ]
+let g:gutentags_ctags_exclude = ['*.css', '*.html', '*.js','.phpcd/*' ]
 let g:gutentags_cache_dir = '~/.vim/gutentags'
 
+set omnifunc=syntaxcomplete#Complete
 if has('autocmd')
   augroup OmniCompleteModes
     autocmd!
-    autocmd FileType php           nested setlocal omnifunc=phpcd#CompletePHP
     autocmd FileType python        nested setlocal omnifunc=pythoncomplete#Complete
     autocmd FileType css           nested setlocal omnifunc=csscomplete#CompleteCSS
     autocmd FileType html,markdown nested setlocal omnifunc=htmlcomplete#CompleteTags
@@ -388,110 +330,16 @@ set complete=.,t
 set completeopt=longest,menuone "like an editor
 
 
-
-"autocmd CompleteDone * pclose " 补全完成后自动关闭预览窗口
-" autocmd InsertLeave * if pumvisible() == 0|pclose|endif
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Neocomplete
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-let g:acp_enableAtStartup                           = 0  " Disable AutoComplPop.
-let g:neocomplete#enable_at_startup                 = 1  " Use neocomplete
-let g:neocomplete#enable_auto_close_preview         = 1  " Auto Close
-let g:neocomplete#enable_auto_select                = 1  " AutoComplPop like behavior.
-let g:neocomplete#sources#buffer#max_keyword_width  = 60 " Set max syntax keyword length
-let g:neocomplete#max_list                          = 60 " Max list
-let g:neocomplete#enable_smart_case                 = 0  " Use smartcase
-let g:neocomplete#enable_fuzzy_completion           = 1  " Fuzzy
-let g:neocomplete#lock_buffer_name_pattern          = '\*ku\*'
-let g:neocomplete#enable_refresh_always             = 1
-
-" Sources
-let g:neocomplete#sources = {}
-"  Use Omni -> And Omni uses PhpCD
-let g:neocomplete#sources.php = ['ultisnips','omni','buffer', 'tag']
-
-" Define dictionary.
-let g:neocomplete#sources#dictionary#dictionaries = {
-    \ 'default' : '',
-        \ }
-
-" Define keyword.
-if !exists('g:neocomplete#keyword_patterns')
-    let g:neocomplete#keyword_patterns = {}
-endif
-let g:neocomplete#keyword_patterns['default'] = '\h\w*'
-
-if !exists('g:neocomplete#sources#omni#input_patterns')
-  let g:neocomplete#sources#omni#input_patterns = {}
-endif
-
-let g:neocomplete#sources#omni#input_patterns.php =
-            \ '\h\w*\|[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
-
-" Plugin key-mappings.
-inoremap <expr><C-g>     neocomplete#undo_completion()
-inoremap <expr><C-l>     neocomplete#complete_common_string()
-" Toggle Neocomplete
-noremap <leader>n :NeoCompleteToggle<CR>
-" <C-h>, <BS>: close popup and delete backword char.
-inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-
-
+" Completor - UltiSnips
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Ultisnips - Integration Neocomplete
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Custon TAB function to activate completion on Ultisnips + Neocomplete
 
 " Folders with Snippets
 let g:UltiSnipsSnippetDirectories=["UltiSnips", "bit-snippets"]
+let g:completor_php_omni_trigger = '([$\w]+|use\s*|->[$\w]*|::[$\w]*|implements\s*|extends\s*|class\s+[$\w]+|new\s*)$'
 
-function! g:UltiSnips_Complete()
-    call UltiSnips#ExpandSnippet()
-    if g:ulti_expand_res == 0
-        if pumvisible()
-            return "\<C-n>"
-        else
-            call UltiSnips#JumpForwards()
-            if g:ulti_jump_forwards_res == 0
-                return  <SID>check_back_space() ? "\<TAB>"
-                            \: neocomplete#start_manual_complete()
-            endif
-        endif
-    endif
-    return ""
-endfunction
-
-function! s:check_back_space() "{{{
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~ '\s'
-endfunction "}}}
-
-" TAB  Ultisnips + Neocomplete Integration
-inoremap <TAB> <C-R>=g:UltiSnips_Complete()<cr>
-
-let g:UltiSnipsExpandTrigger="<nop>" "Important for Neocomplete Integration
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
-
-" Smart CR 
-let g:ulti_expand_or_jump_res = 0
-function! ExpandSnippetOrCarriageReturn()
-    let snippet = UltiSnips#ExpandSnippetOrJump()
-    if g:ulti_expand_or_jump_res > 0
-        return snippet
-    else
-        return neocomplete#close_popup()
-    endif
-endfunction
-inoremap <expr> <CR> pumvisible() ? "<C-R>=ExpandSnippetOrCarriageReturn()<CR>" : "\<CR>"
-
-
-"" call neocomplete#custom#source('_', 'converters',
-""     \ ['converter_add_paren', 'converter_remove_overlap',
-""     \  'converter_delimiter', 'converter_abbr'])
+let g:UltiSnipsJumpForwardTrigger="<C-J>"
+let g:UltiSnipsJumpBackwardTrigger="<C-K>"
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
